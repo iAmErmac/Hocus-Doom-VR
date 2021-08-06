@@ -1,0 +1,22 @@
+AddOptionMenu "OptionsMenu"
+{
+	StaticText " "
+	Submenu "Hocus VR Settings", "HVW_Settings"
+}
+
+OptionMenu "HVW_Settings" {
+	Title "Hocus VR Settings"
+	StaticText " "
+	
+	Option "Show Hands", "hocus_hands", "HV_Model_Option"
+	Option "Weapons Muzzle Flash", "hocus_weapons_mf", "OnOff"
+	StaticText " "
+	StaticText " "
+	StaticText "Cheats", "Gold"
+	Command "Drop all magic items", "summon CheatItem"
+}
+
+OptionValue "HV_Model_Option" {
+	0, "Both"
+	1, "Right only"
+}

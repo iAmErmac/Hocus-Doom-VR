@@ -1,0 +1,37 @@
+
+Class HocusZWeapon : Weapon
+{
+	Default
+	{
+	Weapon.BobSpeed 2.0;
+	Weapon.BobRangeX 0.294;
+	Weapon.BobRangeY 0.6;
+	//Weapon.BobStyle Alpha;
+	Weapon.SelectionOrder 1;
+	Weapon.AmmoType1 "LightningAmmo";
+	Weapon.AmmoType2 "LightningBomb";
+	Weapon.AmmoGive 0;
+	Weapon.AmmoGive2 0;
+	Weapon.AmmoUse 1;
+	Weapon.AmmoUse2 1;
+	Weapon.Kickback 0;
+	+WEAPON.AMMO_OPTIONAL;
+	+WEAPON.ALT_AMMO_OPTIONAL;
+	Weapon.YAdjust 24;
+	weapon.slotnumber 1;
+	}
+	
+	action void A_ReplaceSprite(String myvar, String ssprite, bool pickup=false, float sscale=0.7)
+	{
+		CVar readsetting = CVar.FindCVar(myvar);
+
+		if (readsetting && readsetting.GetInt()==1) {
+			if(pickup) {
+				invoker.sprite = GetSpriteIndex(ssprite);
+				invoker.A_SetScale(sscale);
+			} else {
+				if (player) Player.GetPSprite(PSP_WEAPON).sprite = GetSpriteIndex(ssprite);
+			}
+		}
+	}
+}

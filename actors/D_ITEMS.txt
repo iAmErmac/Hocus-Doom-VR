@@ -1,0 +1,2198 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// LIGHTS DEFINITIONS
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// HEALTH
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+ACTOR HealthPotion : Health 
+{
+	//$Category Useful_Stuff
+	//$Color 1
+	//$NotAngled
+	Inventory.Amount 1
+	Inventory.PickupMessage "$HOCUS_HEALTH"
+	Health.LowMessage 2, "$HOCUS_HEALTH_LOW"
+	+INVENTORY.FANCYPICKUPSOUND
+	scale 1.5
+	//would be nice if this item's pickup sound isn't overriden by other pickup sounds.
+	//Inventory.PickupSound ""
+	States
+	{
+		Spawn:
+			POTN A -1 bright
+			Stop
+		Pickup:
+			TNT1 A 0 A_PlaySound("misc/health_pkup",CHAN_AUTO)
+			Stop
+	}
+}
+
+
+ACTOR HealthPotion2 : Health 
+{
+	//$Category Useful_Stuff
+	//$Color 1
+	//$NotAngled
+	Inventory.Amount 3
+	Inventory.PickupMessage "$HOCUS_HEALTH2"
+	Health.LowMessage 2, "$HOCUS_HEALTH2_LOW"
+	scale 1.5//1.75
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+		Spawn:
+			//POTN AJ 6 bright
+			//POTN NOPO 3 bright
+			POTN NO 6 bright
+			loop
+		Pickup:
+			TNT1 A 0 A_PlaySound("misc/health_pkup",CHAN_AUTO)
+			Stop
+	}
+}
+
+
+ACTOR SuperHealthPotion : Health 
+{
+	//$Category Useful_Stuff
+	//$Color 1
+	//$NotAngled
+	Inventory.Amount 20
+	Inventory.MaxAmount 20
+	Inventory.PickupMessage "$HOCUS_SUPERHEALTH"
+	Health.LowMessage 2, "$HOCUS_SUPERHEALTH_LOW"
+	scale 1.5//2.0
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+		Spawn:
+			//POTN FK 6 bright
+			POTN QRSR 3 bright
+			loop
+	}
+}
+
+
+ACTOR SuperChargehealthy : Health 
+{
+	//$Category Useful_Stuff
+	//$Color 1
+	//$NotAngled
+	Inventory.Amount 20
+	Inventory.MaxAmount 20
+	Inventory.PickupMessage ""
+	Health.LowMessage 2, ""
+	scale 2.0
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+		Spawn:
+			POTN FK 6 bright
+			loop
+	}
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// TREASURE
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+actor RedGem : CustomInventory  //loot 1
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	scale 1.5
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY +COUNTSECRET
+	Inventory.PickupSound "misc/bonus"
+	Inventory.PickupMessage "$HOCUS_TREASURE_1"
+	Inventory.PickupFlash "Display100"
+
+	States
+	{
+		Spawn:
+			LOOT A random(40,60) bright 
+			TNT1 A 0 A_SpawnItemEx("Bluespark3",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+			Loop
+			
+		Pickup:
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+			Stop
+	}
+}
+
+
+actor BlueGem : RedGem  //loot 2
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_2"
+	Inventory.PickupFlash "Display250"
+	
+	States
+	{
+		Spawn:
+			LOOT B random(40,60) bright 
+			TNT1 A 0 A_SpawnItemEx("Bluespark2",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+			Loop
+			
+		Pickup:
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,250,1)
+			Stop
+	}
+}
+
+
+actor GoldGoblet : RedGem  //loot 2
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_3"	
+	Inventory.PickupFlash "Display500"
+	
+	States
+	{
+		Spawn:
+			LOOT C random(40,60) bright 
+			TNT1 A 0 A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+			Loop
+			
+		Pickup:
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,500,1)
+			Stop
+	}
+}
+
+actor GoldCrown : RedGem  //loot 2
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_4"
+	Inventory.PickupFlash "Display1000"
+	States
+	{
+	Spawn:
+		LOOT D random(40,60) bright 
+		TNT1 A 0 A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000,1)
+		Stop
+	}
+}
+
+actor WhiteGem : RedGem  //loot 5
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_5"
+	Inventory.PickupFlash "Display750"
+	States
+	{
+	Spawn:
+		LOOT E random(40,60) bright 
+		TNT1 A 0 A_SpawnItemEx("Bluespark3",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,750,1)
+		Stop
+	}
+}
+
+actor GreenGem : RedGem   //loot 6
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_6"
+	Inventory.PickupFlash "Display750"
+	States
+	{
+	Spawn:
+		LOOT F random(40,60) bright 
+		TNT1 A 0 A_SpawnItemEx("Bluespark2",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,750,1)
+		Stop
+	}
+}
+
+actor GoldAnkh : RedGem   //loot 7
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_7"
+	Inventory.PickupFlash "Display1500"
+	States
+	{
+	Spawn:
+		LOOT G 50 bright 
+		TNT1 A 0 A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1500,1)
+		Stop
+	}
+}
+
+actor RedGemGrav : RedGem 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor BlueGemGrav : BlueGem 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor GoldGobletGrav : GoldGoblet 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor GoldCrownGrav : GoldCrown 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor WhiteGemGrav : WhiteGem 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor GreenGemGrav : GreenGem 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+actor GoldAnkhGrav : GoldAnkh 
+{
+	-NOGRAVITY
+	//$Color 15
+	//$NotAngled
+}
+
+actor DarkwolfTreasure1 : RedGem 
+{
+	//$Category ZDecoration-X: Darkwolf
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	-NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "Display150"
+	Inventory.PickupMessage "$DARKWOLF_TREASURE_1"
+	
+	States
+	{
+	Spawn:
+		DRKW H random(2,4) bright A_SpawnItemEx("Bluespark3",random(-10,10),random(-10,10),random(0,30),0,0,0,0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("DarkwolfTreasure",0,0,0,0)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,150,1)
+		Stop
+	}
+}
+
+actor DarkwolfTreasure2 : RedGem 
+{
+	//$Category ZDecoration-X: Darkwolf
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	-NOGRAVITY
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "Display500"
+	Inventory.PickupMessage "$DARKWOLF_TREASURE_2"
+	
+	States
+	{
+	Spawn:
+		DRKW I random(2,4) bright A_SpawnItemEx("Bluespark3",random(-10,10),random(-10,10),random(0,30),0,0,0,0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("DarkwolfTreasure",0,0,0,0)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,500,1)
+		Stop
+	}
+}
+
+actor DarkwolfTreasure3 : RedGem 
+{
+	//$Category ZDecoration-X: Darkwolf
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	-NOGRAVITY
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "Display2000"
+	Inventory.PickupMessage "$DARKWOLF_TREASURE_3"
+	
+	States
+	{
+	Spawn:
+		DRKW J random(2,4) bright A_SpawnItemEx("Bluespark3",random(-10,10),random(-10,10),random(0,30),0,0,0,0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("DarkwolfTreasure",0,0,0,0)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,2000,1)
+		Stop
+	}
+}
+
+actor DarkwolfTreasure4 : RedGem 
+{
+	//$Category ZDecoration-X: Darkwolf
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	-NOGRAVITY
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "Display750"
+	Inventory.PickupMessage "$DARKWOLF_TREASURE_4"
+	
+	States
+	{
+	Spawn:
+		DRKW K random(2,4) bright A_SpawnItemEx("Bluespark3",random(-10,10),random(-10,10),random(0,30),0,0,0,0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("DarkwolfTreasure",0,0,0,0)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,750,1)
+		Stop
+	}
+}
+
+
+actor DarkwolfTreasure5 : RedGem 
+{
+	//$Category ZDecoration-X: Darkwolf
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	-NOGRAVITY
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "Display1000"
+	Inventory.PickupMessage "$DARKWOLF_TREASURE_5"
+	
+	States
+	{
+	Spawn:
+		DRKW N random(2,4) bright A_SpawnItemEx("Bluespark3",random(-10,10),random(-10,10),random(0,30),0,0,0,0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("DarkwolfTreasure",0,0,0,0)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000,1)
+		Stop
+	}
+}
+
+
+actor Silverore : RedGem
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_SILVER"
+	-NOGRAVITY
+	Inventory.PickupFlash "Display500"
+	+DONTGIB //to prevent crushers from crushing it. That's annoying!
+	Bouncetype "Doom"
+	Bouncecount 3
+	BounceFactor 0.3
+	+BOUNCEAUTOOFF -BOUNCEONWALLS +CANBOUNCEWATER +NOEXPLODEFLOOR +MBFBOUNCER +USEBOUNCESTATE
+	BounceSound "misc/gembounce"
+	scale 1.1
+	-COUNTSECRET
+	States
+	{
+	Bounce:
+		OREE E 8 BRIGHT
+		OREE E 0 A_Stop
+	Spawn:
+	Death:
+		OREE E 50 bright A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,20),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,500,1)
+		Stop
+	}
+}
+
+actor Goldore : RedGem
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_GOLD"
+	-NOGRAVITY
+	Inventory.PickupFlash "Display1000"
+	+DONTGIB //to prevent crushers from crushing it. That's annoying!
+	Bouncetype "Doom"
+	Bouncecount 4
+	BounceFactor 0.3
+	+BOUNCEAUTOOFF -BOUNCEONWALLS +CANBOUNCEWATER +NOEXPLODEFLOOR +MBFBOUNCER +USEBOUNCESTATE
+	BounceSound "misc/gembounce"
+	scale 1.1
+	-COUNTSECRET
+	States
+	{
+	Bounce:
+		OREE D 8 BRIGHT
+		OREE D 0 A_Stop
+	Spawn:
+	Death:
+		OREE D 50 bright A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,20),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000,1)
+		Stop
+	}
+}
+
+actor Gemore1 : RedGem
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_2"
+	-NOGRAVITY
+	Inventory.PickupFlash "Display100"
+	+DONTGIB //to prevent crushers from crushing it. That's annoying!
+	Bouncetype "Doom"
+	Bouncecount 4
+	BounceFactor 0.3
+	+BOUNCEAUTOOFF -BOUNCEONWALLS +CANBOUNCEWATER +NOEXPLODEFLOOR +MBFBOUNCER +USEBOUNCESTATE
+	BounceSound "misc/gembounce"
+	scale 1.1
+	-COUNTSECRET
+	States
+	{
+	Bounce:
+		OREE F 8 BRIGHT
+		OREE F 0 A_Stop
+	Spawn:
+	Death:
+		OREE F 50 bright A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,20),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+		Stop
+	}
+}
+actor Gemore2 : RedGem
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_2"
+	-NOGRAVITY
+	Inventory.PickupFlash "Display250"
+	+DONTGIB //to prevent crushers from crushing it. That's annoying!
+	Bouncetype "Doom"
+	Bouncecount 4
+	BounceFactor 0.3
+	+BOUNCEAUTOOFF -BOUNCEONWALLS +CANBOUNCEWATER +NOEXPLODEFLOOR +MBFBOUNCER +USEBOUNCESTATE
+	BounceSound "misc/gembounce"
+	scale 1.1
+	-COUNTSECRET
+	States
+	{
+	Bounce:
+		OREE G 8 BRIGHT
+		OREE G 0 A_Stop
+	Spawn:
+	Death:
+		OREE G 50 bright A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,20),0,0,0,0,0,CallACS("CheckPLvl",2))
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,250,1)
+		Stop
+	}
+}
+
+
+
+actor TriadCoin : RedGem 
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $50000
+	scale 0.5
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	-COUNTSECRET
+	Inventory.PickupSound "rott/coin"
+	Inventory.PickupMessage "$ROTT_TREASURE_1"
+	Inventory.PickupFlash "Display50k"
+
+	States
+	{
+	Spawn:
+		TRID ABCDEFGH 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,50000,1)
+		Stop
+	}
+}
+
+actor TriadCoin2 : TriadCoin 
+{
+	Inventory.PickupMessage "$ROTT_TREASURE_2"
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $10000
+	Inventory.PickupFlash "Display10k"
+	States
+	{
+	Spawn:
+		TRI2 ABCDEFGH 2 bright
+		Loop
+		
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000,1)
+		Stop
+	}
+}
+
+actor TriadCoin3 : TriadCoin 
+{
+	Inventory.PickupMessage "$ROTT_TREASURE_3"
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $25000
+	Inventory.PickupFlash "Display25k"
+	States
+	{
+	Spawn:
+		TRI3 ABCDEFGH 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,25000,1)
+		Stop
+	}
+}
+
+actor TriadCoin4 : TriadCoin 
+{
+	Inventory.PickupMessage "$ROTT_TREASURE_4"
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $75000
+	Inventory.PickupFlash "Display75k"
+	States
+	{
+	Spawn:
+		TRI4 ABCDEFGH 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,75000,1)
+		Stop
+	}
+}
+
+actor TriadCoin5 : TriadCoin 
+{
+	Inventory.PickupMessage "$ROTT_TREASURE_5"
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $100000
+	Inventory.PickupFlash "Display100k"
+	States
+	{
+	Spawn:
+		TRI5 ABCDEFGH 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100000,1)
+		Stop
+	}
+}
+
+actor TriadCoin6 : TriadCoin 
+{
+	Inventory.PickupMessage "$ROTT_TREASURE_6"
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	//$Title TriadCoin - $150000
+	Inventory.PickupFlash "Display150k"
+	States
+	{
+	Spawn:
+		TRI6 ABCDEFGH 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,150000,1)
+		Stop
+	}
+}
+
+actor Plates : RedGem  //loot x
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	Inventory.PickupMessage "$HOCUS_TREASURE_PLATE"
+	Inventory.PickupFlash "Display10k"
+	Inventory.PickupSound "plateget"
+	States
+	{
+		Spawn:
+			PLAT A -1 bright 
+			//TNT1 A 0 A_SpawnItemEx("Bluespark2",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,CallACS("CheckPLvl",2))
+			Loop
+			
+		Pickup:
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000,1)
+			Stop
+	}
+}
+
+
+
+actor ElectroChip : RedGem 
+{
+	//$Category ZDecoration-Y: Electroman
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "electroman/robofire7"
+	Inventory.PickupMessage "$ELECTRO_CHIP"
+	Inventory.PickupFlash "Display5000"
+	
+	States
+	{
+	Spawn:
+		ELE2 G 20 
+		ELE2 G 5 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,5000,1)
+		Stop
+	}
+}
+
+
+ACTOR Cookie : RedGem 
+{
+	//$Category Treasure
+	//$Color 15
+	//$NotAngled
+	scale 1.75
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	-COUNTSECRET
+	Inventory.PickupSound "cookieget"
+	Inventory.PickupMessage "$COOKIE"
+	Inventory.PickupFlash "Display10k"
+	
+	States
+	{
+	Spawn:
+		COOK A -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000,1)
+		Stop
+	}
+}
+
+
+
+
+ACTOR JillApple : RedGem 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "jill/doop"
+	Inventory.PickupMessage "$JILL_APPLE"
+	Inventory.PickupFlash "Display100"
+	
+	States
+	{
+	Spawn:
+		JL12 EFGH 3 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("JillAppleHealth",1)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+		Stop
+	}
+}
+
+
+ACTOR JillAppleCONTRA : JillApple 
+{	
+	States
+	{
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+		Stop
+	}
+}
+
+
+ACTOR JillAppleHealth : Health
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 20
+	Inventory.Amount 1
+	Inventory.PickupMessage ""
+	States
+	{
+	Spawn:
+		TNT1 A -1
+		loop
+	}
+}
+
+ACTOR JillGem : RedGem 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "jill/doop"
+	Inventory.PickupMessage "$JILL_GEM1"
+	Inventory.PickupFlash "Display100"
+	
+	States
+	{
+	Spawn:
+		JL25 ABCD 3 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+		Stop
+	}
+}
+
+ACTOR JillGem2 : RedGem 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "jill/doop"
+	Inventory.PickupMessage "$JILL_GEM2"
+	Inventory.PickupFlash "Display500"
+	
+	States
+	{
+	Spawn:
+		JL25 EFGH 3 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,500,1)
+		Stop
+	}
+}
+ACTOR JillGem3 : RedGem 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	scale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "jill/doop"
+	Inventory.PickupMessage "$JILL_GEM3"
+	Inventory.PickupFlash "Display1000"
+	
+	States
+	{
+	Spawn:
+		JL25 IJKL 3 bright
+		Loop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000,1)
+		Stop
+	}
+}
+
+
+Actor EPIC  //THIS THING
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	Health 5
+	Mass 100000000
+	Speed 0
+	MeleeRange 32
+	Damage (0)
+	DamageFactor "IHateBlocks", 0
+	DamageFactor "ElectroFire", 0
+	DamageFactor "PlayerFire", 0	
+	DamageType "EPIC"
+	+FULLVOLACTIVE
+	+FULLVOLDEATH	
+	Monster
+	-ISMONSTER
+	+NOBLOOD
+	+NOCLIP	
+	-COUNTKILL
+	-SOLID
+	-SHOOTABLE
+	-NOPAIN
+	-INVISIBLE
+	PainChance 255
+	SeeSound ""
+	scale 2.5
+	Species "EPIC"
+	+NOGRAVITY
+	var int user_counter;
+	var int user_doonce;
+	alpha 0
+	renderstyle translucent
+	States
+	{
+		Count:
+			EPIC A 0 A_PlaySound("jill/epic")
+			EPIC A 0 Acs_NamedExecuteAlways("AddToScore",0,500)
+			//TNT1 A 0 A_SpawnItemEx("JillParticle1",0,0,16,frandom(-12,12),frandom(-12,12),frandom(4,12),0,SXF_NOCHECKPOSITION)
+			//TNT1 A 0 A_SpawnItemEx("JillParticle2",0,0,16,frandom(-12,12),frandom(-12,12),frandom(4,12),0,SXF_NOCHECKPOSITION)
+			EPIC A 2 bright A_SpawnItemEx("Display500",frandom(-8,8),frandom(-8,8),32,0,0,1)
+			EPIC A 0 A_SetUserVar(user_counter,user_counter+1)
+			goto see
+		Spawn:
+			EPIC A 0 A_JumpIf(user_doonce>0,"Vomp")
+			EPIC A 0 A_SpawnItemEx("EPICThing",0,0,0,0,0,0,0,SXF_SETMASTER)
+			EPIC A 0 A_SetUserVar(user_doonce,1)
+			Vomp:
+			EPIC A 2//A_Look
+		See:
+			EPIC A 0 A_JumpIf(user_counter>=20,"Deather")
+			EPIC A 0 A_Chase("","")
+			EPIC A 2 bright A_JumpIfCloser(32,"Count")
+			goto see
+	Deather:
+		TNT1 A 0 A_Explode((10000000),16,0,0,16)//A_KillChildren("EPIC",KILS_FOILINVUL)
+		TNT1 A 0 A_PlaySound("jill/break")
+		TNT1 A 0 A_NoGravity
+		TNT1 AAAA 0 A_SpawnItemEx("JillParticle1",0,0,16,frandom(-12,12),frandom(-12,12),frandom(4,12),0,SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 A_SpawnItemEx("JillParticle2",0,0,16,frandom(-12,12),frandom(-12,12),frandom(4,12),0,SXF_NOCHECKPOSITION)
+		TNT1 AAAA 0 A_SpawnItemEx("JillParticle3",0,0,16,frandom(-12,12),frandom(-12,12),frandom(4,12),0,SXF_NOCHECKPOSITION)
+		TNT1 A 1 A_KillChildren("EPIC",KILS_FOILINVUL)
+		Stop
+	}	
+}
+
+Actor EPICThing
+{	
+	xscale 2.75
+	yscale 2.25
+	+NOGRAVITY
+	Monster
+	-ISMONSTER
+	+NOBLOOD
+	+NOCLIP	
+	-COUNTKILL
+	-SOLID
+	-SHOOTABLE
+	+VULNERABLE
+	-NOPAIN
+	+INVULNERABLE
+	PainChance 255
+	health 5
+	speed 0
+	mass 100000000
+	+NODAMAGETHRUST
+	Species "EPIC"
+	DamageFactor "EPIC", 1.0
+	DamageFactor "IHateBlocks", 0
+	DamageFactor "ElectroFire", 0
+	DamageFactor "PlayerFire", 0	
+	DamageFactor "Normal", 0	
+	States
+	{
+		Spawn:
+			EPIC A 0
+			EPIC A 0 A_Look
+		See:
+			EPIC A 0
+			EPIC ABCD 3 bright A_Chase("","")
+			loop
+	Death:
+		TNT1 A 0 
+		Stop
+	}	
+}
+
+
+actor JillKey : Inventory 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 15
+	//$NotAngled
+	scale 2.5
+	radius 20
+	height 24
+	+NOGRAVITY
+	Inventory.PickupSound "jill/yeah"
+	Inventory.PickupMessage "A strange key"
+	Inventory.PickupFlash "DisplayKey"
+	Inventory.Amount 1
+	Inventory.MaxAmount 8
+	//+INVENTORY.INVBAR
+	States
+	{
+	Spawn:
+		JL20 ABC 3 bright 
+		Loop
+	}
+}
+
+
+
+
+
+
+
+
+
+
+ACTOR JazzCarrot : RedGem 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	scale 1.5
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	-COUNTSECRET
+	Inventory.PickupSound "jazz/yum"
+	Inventory.PickupMessage "$JAZZ_CARROT"
+	//Inventory.PickupFlash "Display100"
+	
+	States
+	{
+	Spawn:
+		JZSC F -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("JazzCarrotHealth",1)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,250,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzCarrotCONTRA : JazzCarrot 
+{	
+	States
+	{
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,250,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzCarrotHealth : Health
+{
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.MaxAmount 20
+	Inventory.Amount 1
+	Inventory.PickupMessage ""
+	States
+	{
+	Spawn:
+		TNT1 A -1
+		loop
+	}
+}
+
+
+ACTOR JazzGem1 : RedGem 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	scale 1.5
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTSECRET
+	Inventory.PickupSound "jazz/itemget"
+	Inventory.PickupMessage "$JAZZ_GEM1"
+	Inventory.PickupFlash "JazzItemFlash"//Display100"
+	+FLOATBOB
+	
+	States
+	{
+	Spawn:
+		JZSC A -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzGem2 : JazzGem1 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	Inventory.PickupMessage "$JAZZ_GEM2"
+	Inventory.PickupFlash "JazzItemFlash"//Display250"
+	+FLOATBOB
+	
+	States
+	{
+	Spawn:
+		JZSC B -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,250,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzGem3 : JazzGem1 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	Inventory.PickupMessage "$JAZZ_GEM3"
+	Inventory.PickupFlash "JazzItemFlash"//Display500"
+	+FLOATBOB
+	
+	States
+	{
+	Spawn:
+		JZSC C -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,500,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzGem4 : JazzGem1 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	Inventory.PickupMessage "$JAZZ_GEM4"
+	Inventory.PickupFlash "JazzItemFlash"//Display750"
+	+FLOATBOB
+	
+	States
+	{
+	Spawn:
+		JZSC D -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,750,1)
+		Stop
+	}
+}
+
+
+ACTOR JazzGem5 : JazzGem1 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 15
+	Inventory.PickupMessage "$JAZZ_GEM5"
+	Inventory.PickupFlash "JazzItemFlash"//Display1000"
+	
+	States
+	{
+	Spawn:
+		JZSC E -1 bright
+		stop
+	Pickup:
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000,1)
+		Stop
+	}
+}
+
+//?????
+actor JazzPowerup 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 14
+	Radius 18
+	Height 48
+	-SOLID +NOICEDEATH +SHOOTABLE
+	+NOBLOODDECALS
+	Mass 10000000
+	health 1
+	DeathSound "jazz/powerup"
+	PainChance 0
+	scale 1.1
+	DamageFactor "JazzFire", 1.0
+	DamageFactor "PlayerFire", 0.0
+	DamageFactor "MonsterFire", 0.0
+	
+	States
+	{		
+		Spawn:
+			JZGN ABCD 2 bright
+			Loop
+		Death:			
+			JZGN A 0 A_Scream
+			JZGN A 0 A_Stop
+			JZGN A 0 A_NoGravity
+			JZGN A 0 ACS_NamedExecuteAlways("JazzWeaponEffect",0,0,0,0)
+			JZGN A 0 A_GiveToTarget("JazzWeaponPowerup",1)
+			JZGN A 0 A_ChangeVelocity(0,0,1)
+		Loopy:
+			JZGN A 1 A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+actor JazzInvincible : CustomInventory 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	//$Color 14
+	-INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_INVULNERABLE"
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "DisplayGod"
+	Scale 1.5
+	States
+	{
+		Spawn:
+			JZIV ABCDCB 3 bright
+			Loop
+		Pickup:
+			TNT1 A 0 A_PlaySound("jazz/godmode",6)
+			TNT1 A 0 ACS_NamedExecuteAlways("JazzIVEffect",0,0,0,0)
+			TNT1 A 0 A_GiveInventory("JazzInvinciblePowerup",1)		
+			Stop
+	}
+}
+
+
+ACTOR JazzInvinciblePowerup : PowerupGiver 
+{
+	-COUNTITEM
+	+INVENTORY.AUTOACTIVATE
+	-INVENTORY.ALWAYSPICKUP
+	+INVENTORY.BIGPOWERUP
+	Inventory.MaxAmount 0
+	Powerup.Type PowerInvulnerable
+	Powerup.Color None// 0.0, 0.0, 0.0, 1.0, 1.0, 1.0
+	Powerup.Duration -20
+	//+INVENTORY.NOSCREENBLINK
+	Inventory.PickupMessage "$HOCUS_INVULNERABLE"
+	States
+	{
+	Spawn:
+		POTN FK 6 Bright
+		Loop
+	}
+}
+
+
+actor JazzAmmo1Pickup : CustomInventory 
+{
+	scale 1.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY -COUNTSECRET	
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Inventory.Pickupsound "jazz/itemget"
+	Inventory.PickupFlash "JazzItemFlash"
+	Inventory.PickupMessage "$JAZZ_AMMO1"
+	-INVBAR
+	+FLOATBOB
+	States
+	{
+		Spawn:
+			JZA1 E 4 bright
+			loop
+		Pickup:
+			TNT1 A 0 A_GiveInventory("JazzAmmo1",2)
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,25,1)
+			Stop
+	}	
+}
+
+
+actor JazzAmmo2Pickup : CustomInventory 
+{
+	scale 1.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY -COUNTSECRET	
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Inventory.Pickupsound "jazz/itemget"
+	Inventory.PickupFlash "JazzItemFlash"
+	Inventory.PickupMessage "$JAZZ_AMMO2"
+	-INVBAR
+	+FLOATBOB
+	States
+	{
+		Spawn:
+			JZA2 E 4 bright
+			loop
+		Pickup:
+			TNT1 A 0 A_GiveInventory("JazzAmmo2",2)
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,25,1)
+			Stop
+	}	
+}
+
+
+actor JazzAmmo3Pickup : CustomInventory 
+{
+	scale 1.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY -COUNTSECRET	
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Inventory.Pickupsound "jazz/itemget"
+	Inventory.PickupFlash "JazzItemFlash"
+	Inventory.PickupMessage "$JAZZ_AMMO3"
+	-INVBAR
+	+FLOATBOB
+	States
+	{
+		Spawn:
+			JZA3 E 4 bright
+			loop
+		Pickup:
+			TNT1 A 0 A_GiveInventory("JazzAmmo3",2)
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,25,1)
+			Stop
+	}	
+}
+
+
+actor JazzAmmo1Big 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Radius 18
+	Height 48
+	-SOLID +NOICEDEATH +SHOOTABLE
+	+NOBLOODDECALS
+	Mass 10000000
+	health 1
+	DeathSound "jazz/ammoget"
+	PainChance 0
+	scale 1.1
+	DamageFactor "JazzFire", 1.0
+	DamageFactor "PlayerFire", 0.0
+	DamageFactor "MonsterFire", 0.0
+	States
+	{		
+		Spawn:
+			JZA1 ABCD 2 bright
+			Loop
+		Death:			
+			JZA1 A 0 A_Scream
+			JZA1 A 0 A_Stop
+			JZA1 A 0 A_NoGravity
+			JZA1 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+			JZA1 A 0 A_GiveToTarget("JazzAmmo1",15)
+			JZA1 A 0 A_ChangeVelocity(0,0,1)
+		Loopy:
+			JZA1 A 1 A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+actor JazzAmmo2Big 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Radius 18
+	Height 48
+	-SOLID +NOICEDEATH +SHOOTABLE
+	+NOBLOODDECALS
+	Mass 10000000
+	health 1
+	DeathSound "jazz/ammoget"
+	PainChance 0
+	scale 1.1
+	DamageFactor "JazzFire", 1.0
+	DamageFactor "PlayerFire", 0.0
+	DamageFactor "MonsterFire", 0.0
+	
+	States
+	{		
+		Spawn:
+			JZA2 ABCD 2 bright
+			Loop
+		Death:			
+			JZA2 A 0 A_Scream
+			JZA2 A 0 A_Stop
+			JZA2 A 0 A_NoGravity
+			JZA2 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+			JZA2 A 0 A_GiveToTarget("JazzAmmo2",15)
+			JZA2 A 0 A_ChangeVelocity(0,0,1)
+		Loopy:
+			JZA2 A 1 A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+actor JazzAmmo3Big 
+{
+	//$Category ZDecoration-Z: Jazz Jackrabbit
+	//$NotAngled
+	Radius 18
+	Height 48
+	-SOLID +NOICEDEATH +SHOOTABLE
+	+NOBLOODDECALS
+	Mass 10000000
+	health 1
+	DeathSound "jazz/ammoget"
+	PainChance 0
+	scale 1.1
+	DamageFactor "JazzFire", 1.0
+	DamageFactor "PlayerFire", 0.0
+	DamageFactor "MonsterFire", 0.0
+	
+	States
+	{		
+		Spawn:
+			JZA3 ABCD 2 bright
+			Loop
+		Death:			
+			JZA3 A 0 A_Scream
+			JZA3 A 0 A_Stop
+			JZA3 A 0 A_NoGravity
+			JZA3 A 0 Acs_NamedExecuteAlways("AddToScore",0,100,1)
+			JZA3 A 0 A_GiveToTarget("JazzAmmo3",15)
+			JZA3 A 0 A_ChangeVelocity(0,0,1)
+		Loopy:
+			JZA3 A 1 A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Weapon Pickups
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actor RapidfirePowerup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	scale 1.5
+	//+INVENTORY.ALWAYSPICKUP //wow that was simple
+	Inventory.PickupMessage "$HOCUS_RAPIDFIRE"
+	Inventory.PickupSound ""	
+	Inventory.PickupFlash "DisplayShoot"
+	
+	States
+	{
+	Spawn:
+		POTN C 2 BRIGHT
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,"Pass")
+		TNT1 A 0 A_JumpIfInventory("RapidfirePowerupEffect",1,"Pass")
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 Acs_NamedExecuteAlways("PowerFlash")
+		Stop
+	Pass:
+		TNT1 A 0
+		fail
+	}
+}
+
+actor FlamethrowerPowerup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	scale 1.5
+	//+INVENTORY.ALWAYSPICKUP //wow that was simple
+	Inventory.PickupMessage "$HOCUS_FLAMETHROWER"
+	Inventory.PickupSound ""	
+	Inventory.PickupFlash "DisplayShoot"
+	
+	States
+	{
+	Spawn:
+		POTN M 2 BRIGHT
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("RapidfirePowerupEffect",1,"Pass")
+		TNT1 A 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,"Pass")
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 Acs_NamedExecuteAlways("PowerFlash",0,1)
+		Stop
+	Pass:
+		TNT1 A 0
+		fail
+	}
+}
+
+
+
+
+actor LightningBombPickup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	scale 1.5
+	//+INVENTORY.ALWAYSPICKUP //wow that was simple
+	Inventory.PickupMessage "$HOCUS_MAGICBOMB"
+	Inventory.PickupSound ""	
+	Inventory.PickupFlash "DisplayBomb"
+	Tag "Magic Bomb"
+	+NOGRAVITY
+	
+	States
+	{
+	Spawn:
+			BOMB A 25 bright
+			BOMB B 4 bright
+			Loop
+		Pickup:
+			TNT1 A 0 A_JumpIfInventory("LightningBomb",99,"Pass")
+			TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+			TNT1 A 0 A_GiveInventory("LightningBomb",3)
+			//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+			TNT1 A 0 Acs_NamedExecuteAlways("HocusBombWindow",0)
+			Stop
+		Pass:
+			TNT1 A 0
+			fail
+	}
+}
+
+
+
+actor LightningUpgradePickup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_Lightning_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	States
+	{
+	Spawn:
+		POWR A 25 bright
+		POWR B 4 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 Acs_NamedExecuteAlways("LightningUpgrader",0,0)
+		//TNT1 A 0 A_GiveInventory("lightningAmmoMeterMax",1)
+		//TNT1 A 0 A_GiveInventory("lightningSpellUpgrade",1)
+		Stop
+	}
+}	
+
+
+
+actor SuperchargePickup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_Lightning_SUPERPOWER"
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "DisplayPower"
+	Scale 1.5
+	//renderstyle add
+	//+VISIBILITYPULSE
+	States
+	{
+	Spawn:
+		WRPS A 0
+		WRPS A 2 bright A_SpawnItemEx("YellowMagic",
+			(cos(random(0,360))*11),
+			(sin(random(0,360))*11),
+			(cos(random(0,360))*11)+28,
+			0,0,0,
+			0,0,CallACS("CheckPLvl"))
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000)
+		TNT1 A 0 Acs_NamedExecuteAlways("LightningUpgrader",0,10)
+		TNT1 A 0 A_GiveInventory("SuperChargehealthy",1)	
+		Stop
+	}
+}
+
+actor SuperchargePickupCONTRA : SuperchargePickup
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000)
+		TNT1 A 0 Acs_NamedExecuteAlways("LightningUpgrader",0,10)
+		Stop
+	}
+}
+
+actor GodPotion : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	-INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_INVULNERABLE"
+	Inventory.PickupSound ""
+	Inventory.PickupFlash "DisplayGod"
+	Scale 1.65
+	//renderstyle translucent
+	//+VISIBILITYPULSE
+	States
+	{
+		Spawn:
+			XPOT AABBCCDDEEFFGGHHII 1 Bright A_SpawnItemEx("Godpoof",frandom(-0.5,0.5),frandom(-0.5,0.5),20,0,0,frandom(0.5,1.0),0,0,CallACS("CheckPLvl",2))
+			Loop
+		Pickup:
+			TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+			TNT1 A 0 A_GiveInventory("GodPotionPower",1)		
+			Stop
+	}
+}
+
+ACTOR GodPotionPower : PowerupGiver 
+{
+	-COUNTITEM
+	+INVENTORY.AUTOACTIVATE
+	-INVENTORY.ALWAYSPICKUP
+	+INVENTORY.BIGPOWERUP
+	Inventory.MaxAmount 0
+	Powerup.Type PowerInvulnerable//HocusGodPower
+	//Powerup.Color "9C 84 D0",1.0 #9C84D0
+	//Powerup.Colormap 0.1, 0.2, 0.4, 0.68, 0.4, 0.75
+	//Powerup.Colormap 0.2, 0.3, 0.4, 0.7, 0.35, 0.8
+	Powerup.Colormap 0.015, 0.3, 0.3, 0.75, 0.45, 0.85
+	Powerup.Duration -30
+	//+INVENTORY.NOSCREENBLINK
+	Inventory.PickupMessage "$HOCUS_INVULNERABLE"
+	States
+	{
+	Spawn:
+		POTN FK 6 Bright
+		Loop
+	}
+}
+
+
+
+
+actor LightningSplitterPickup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_SPLITTER_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplaySplit"	
+	
+	States
+	{
+	Spawn: 
+		POTN G -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellSplitter",30)
+		Stop
+	}
+}
+actor LightningLaserPickup : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_LASER_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayLaser"
+	
+	States
+	{
+	Spawn:
+		POTN L -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellLaser",20)
+		Stop
+	}
+}	
+
+
+actor LightningPowerPickup :  CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_POWER_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayPower"	
+	
+	States
+	{
+	Spawn:
+		POTN H -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellPower",20)
+		Stop
+	}
+}	
+
+actor LightningFireballPickup :  CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_FIRE_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayFireball"
+	
+	States
+	{
+	Spawn:
+		POTN B -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellFireball",3)
+		Stop
+	}
+}
+//Twin
+actor LightningFollowerPickup :  CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$HOCUS_HOMING_UPGRADE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayTwin"
+	
+	States
+	{
+	Spawn:
+		POTN I -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/p_pkup",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellFollower",40)
+		Stop
+	}
+}
+
+//jill weapons
+
+actor JillKnifePickup :  CustomInventory 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$JILL_KNIFE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayKnife"	
+	
+	States
+	{
+	Spawn:
+		JL14 A -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("jill/riff",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellKnife",20)
+		Stop
+	}
+}
+
+actor JillSuperKnifePickup :  CustomInventory 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$JILL_SUPERKNIFE"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayKnife"	
+	
+	States
+	{
+	Spawn:
+		JL14 CDED 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("jill/riff",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellSuperKnife",20)
+		Stop
+	}
+}
+
+actor JillSawPickup :  CustomInventory 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$JILL_SAW"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplaySaw"	
+	
+	States
+	{
+	Spawn:
+		JL14 B -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("jill/riff",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellSaw",10)
+		Stop
+	}
+}
+
+actor JillFireballPickup :  CustomInventory 
+{
+	//$Category ZDecoration-Z: Jill
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupMessage "$JILL_FIREBALL"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	Inventory.PickupFlash "DisplayFireball"	
+	
+	States
+	{
+	Spawn:
+		JL14 FGHI 2 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("jill/riff",6)
+		//TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		TNT1 A 0 A_GiveInventory("lightningSpellJillFireball",20)
+		Stop
+	}
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Crystal Ball -- The Point of The Game.
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actor CrystalBall : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 9
+	//$NotAngled
+	scale 1.5
+	radius 12
+	height 16
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	+COUNTITEM
+	Inventory.PickupSound ""	
+	Inventory.PickupMessage "$HOCUS_CRYSTALBALL"
+	
+	States
+	{
+	Spawn:
+		ORBB ABCDEF 4 bright //A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,220)
+		Loop
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/crystal",7)
+		TNT1 A 0 Acs_NamedExecuteAlways("ItemFlash")
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+		Stop
+	}
+}
+
+actor CrystalBallGravity : CrystalBall 
+{
+	//$Category Useful_Stuff
+	//$Color 9
+	//$NotAngled
+	-NOGRAVITY
+}
+
+//except its green
+actor RedCrystalBall : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 9
+	//$NotAngled
+	scale 1.5
+	radius 12
+	height 16
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY	
+	Inventory.PickupMessage "$HOCUS_SECRETCRYSTAL"
+	
+	States
+	{
+	Spawn:
+		CRYS ABCDEF 4 bright //A_SpawnItemEx("Bluespark",random(-5,5),random(-5,5),random(15,25),0,0,0,0,0,220)
+		Loop
+		
+	Pickup:
+		TNT1 A 0 A_PlaySound("misc/yahoo",7)
+		TNT1 A 0 Acs_NamedExecuteAlways("ItemFlash",0,1)
+		TNT1 A 0 A_GiveInventory("RedCrystalBallKeep",1)
+		TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,10000)
+		Stop
+	}
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Misc Pickups
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actor TeleportBottle : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 9
+	//$NotAngled
+	scale 1.5
+	radius 12
+	height 16
+	+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupSound ""	
+	Inventory.PickupMessage "$HOCUS_TELEPORT"
+	Inventory.PickupFlash "DisplayWarp"
+	
+	States
+	{
+	Spawn:
+		POTN D -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0
+		Stop
+	}
+}
+
+actor SuperJumpPotion : CustomInventory 
+{
+	//$Category Useful_Stuff
+	//$Color 9
+	//$NotAngled
+	scale 1.5
+	radius 12
+	height 16
+	//+INVENTORY.ALWAYSPICKUP
+	+NOGRAVITY
+	Inventory.PickupSound ""
+	Inventory.PickupMessage "$HOCUS_SUPERJUMP"
+	Inventory.PickupFlash "DisplayJump"
+	
+	States
+	{
+	Spawn:
+		POTN E -1 bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("IsJumping",1,"Pass") //so if you don't check this first, it'll spawn JUMP a lot
+		TNT1 A 0 A_PlaySound("misc/yahoo",6)
+		TNT1 A 0 ACS_NamedExecute("JumpPotion",0,0,0,0)
+		stop
+	Pass:
+		TNT1 A 0
+		fail
+	}
+}
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Keys
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actor HocusGoldKey : Key 
+{
+	//$Category Hocus_Keys
+	//$Color 11
+	//$NotAngled
+	+NOGRAVITY
+	Inventory.Icon "m_key1"
+	Inventory.PickupMessage "$HOCUS_GOTGOLDKEY"
+	scale 1.5
+	Inventory.PickupFlash "DisplayKey"	
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+	Spawn:
+		KEYG A 25 bright
+		KEYW A 5 bright
+		loop	
+	}
+}
+
+actor HocusSilverKey : Key 
+{
+	//$Category Hocus_Keys
+	//$Color 11
+	//$NotAngled
+	+NOGRAVITY
+	Inventory.Icon "m_key2"
+	Inventory.PickupMessage "$HOCUS_GOTSILVERKEY"
+	scale 1.5
+	Inventory.PickupFlash "DisplayKey"
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+	Spawn:
+		KEYS A 25 bright
+		KEYW A 5 bright
+		loop
+	}
+}
+
+actor HocusIronKey : Key 
+{
+	//$Category Hocus_Keys
+	//$Color 11
+	//$NotAngled
+	+NOGRAVITY
+	Inventory.Icon "m_key3"
+	Inventory.PickupMessage "$HOCUS_GOTIRONKEY"
+	scale 1.5
+	Inventory.PickupFlash "DisplayKey"
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+	Spawn:
+		KEYI A 25 bright
+		KEYW A 5 bright
+		loop
+	}
+}
+
+actor HocusBronzeKey : Key 
+{
+	//$Category Hocus_Keys
+	//$Color 11
+	//$NotAngled
+	+NOGRAVITY
+	Inventory.Icon "m_key4"
+	Inventory.PickupMessage "$HOCUS_GOTBRONZEKEY"
+	scale 1.5
+	Inventory.PickupFlash "DisplayKey"
+	+INVENTORY.FANCYPICKUPSOUND
+	
+	States
+	{
+	Spawn:
+		KEYB A 25 bright
+		KEYW A 5 bright
+		loop
+	}
+}
+
+
+
+//For testing purpose
+Actor CheatItem
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("ZPower_wand")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("RapidfirePowerup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("FlamethrowerPowerup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 AAAAAAAAAAAAAAA 3 A_DropItem("LightningBombPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningUpgradePickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("SuperchargePickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningSplitterPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningLaserPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningPowerPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningFireballPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("LightningFollowerPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JillKnifePickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JillSuperKnifePickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JillSawPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JillFireballPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JazzPowerup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("RocketLawnChair")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("ElectromanGunPickup")
+		TNT1 AAAAA 0 A_Warp(AAPTR_DEFAULT, frandom(-10,10)*2, frandom(-10,10)*2)
+		TNT1 A 3 A_DropItem("JazzGunPickup")
+		Stop
+	}
+}

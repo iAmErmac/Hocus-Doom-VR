@@ -1,0 +1,27 @@
+#include "GLDEFS/ModelShading.txt"
+
+
+//Brightmaps
+
+brightmap texture models/weapons/hocus/hand_flames.png
+{
+   map models/weapons/hocus/hand_flames_bm.jpg
+}
+
+brightmap texture models/weapons/wand/magicwand.png
+{
+   map models/weapons/wand/magicwand_bm.jpg
+}
+brightmap texture models/weapons/wand/wand_fire.png
+{
+   map models/weapons/wand/wand_fire_bm.jpg
+}
+
+brightmap texture models/weapons/blaster/BlasterPlasma.png
+{
+   map models/weapons/blaster/BlasterPlasma_bm.jpg
+}
+brightmap texture models/weapons/blaster/BlasterPlasma_fire.png
+{
+   map models/weapons/blaster/BlasterPlasma_bm.jpg
+}

@@ -1,0 +1,2 @@
+server int hocus_hands = 0;
+server bool hocus_weapons_mf = true;

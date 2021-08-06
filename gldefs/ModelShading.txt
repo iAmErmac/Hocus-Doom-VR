@@ -1,0 +1,13 @@
+
+// Wand
+material texture "models/weapons/wand/magicwand.png" { shader "shaders/simsun.fp" }
+material texture "models/weapons/wand/wand_fire.png" { shader "shaders/simsun.fp" }
+
+// Cannon
+material texture "models/weapons/cannon/cannon.png" { shader "shaders/simsun.fp" }
+
+// Jazz blaster
+material texture "models/weapons/blaster/blastergun.png" { shader "shaders/simsun.fp" }
+
+// Electroman Rifle
+material texture "models/weapons/rifle/rifle.png" { shader "shaders/simsun.fp" }

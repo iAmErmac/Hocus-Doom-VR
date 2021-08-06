@@ -1,0 +1,88 @@
+
+Model ElectromanGun
+{
+   Path "models/weapons/rifle"
+   Model 0 "rifle.md3"
+   Skin 0 "rifle.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -9.0
+   
+   //Ready
+   FrameIndex ELEC A 0 0
+   FrameIndex ELEC B 0 1
+   FrameIndex ELEC C 0 2
+   FrameIndex ELEC D 0 3
+}
+
+//Flash
+Model ElectromanGun
+{
+   Path "models/weapons/rifle"
+   Model 0 "rifle_mf.md3"
+   Skin 0 "rifle_mf.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -9.0
+   
+   FrameIndex ELMF A 0 1
+}
+
+//Toss bomb
+Model ElectromanGun
+{
+   Path "models/weapons/hocus"
+   Model 0 "toss.md3"
+   Skin 0 "hands.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -15.0
+   
+   FrameIndex TOSS A 0 0
+   FrameIndex TOSS B 0 1
+   FrameIndex TOSS C 0 2
+   FrameIndex TOSS D 0 3
+   FrameIndex TOSS E 0 4
+   FrameIndex TOSS F 0 5
+   FrameIndex TOSS G 0 6
+   FrameIndex TOSS H 0 7
+   FrameIndex TOSS I 0 8
+   FrameIndex TOSS J 0 9
+   FrameIndex TOSS K 0 10
+   FrameIndex TOSS L 0 11
+   FrameIndex TOSS M 0 12
+   FrameIndex TOSS N 0 13
+   FrameIndex TOSS O 0 14
+   FrameIndex TOSS P 0 15
+   FrameIndex TOSS Q 0 16
+}
+
+//Toss bomb - Single hand model
+Model ElectromanGun
+{
+   Path "models/weapons/hocus"
+   Model 0 "toss.md3"
+   SurfaceSkin 0 0 "no_hand.png"
+   SurfaceSkin 0 1 "hands.png"
+   SurfaceSkin 0 2 "no_hand.png"
+   SurfaceSkin 0 3 "hands.png"
+   SurfaceSkin 0 4 "no_hand.png"
+   SurfaceSkin 0 5 "hands.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -15.0
+   
+   FrameIndex TOSB A 0 0
+   FrameIndex TOSB B 0 1
+   FrameIndex TOSB C 0 2
+   FrameIndex TOSB D 0 3
+   FrameIndex TOSB E 0 4
+   FrameIndex TOSB F 0 5
+   FrameIndex TOSB G 0 6
+   FrameIndex TOSB H 0 7
+   FrameIndex TOSB I 0 8
+   FrameIndex TOSB J 0 9
+   FrameIndex TOSB K 0 10
+   FrameIndex TOSB L 0 11
+   FrameIndex TOSB M 0 12
+   FrameIndex TOSB N 0 13
+   FrameIndex TOSB O 0 14
+   FrameIndex TOSB P 0 15
+   FrameIndex TOSB Q 0 16
+}

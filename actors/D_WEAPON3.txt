@@ -1,0 +1,362 @@
+//Secret level weapons
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Electro Rifle
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+actor ElectromanGunPickup : CustomInventory// 30254 
+{
+	//$Category ZDecoration-Y: Electroman
+	//$NotAngled
+	xscale 2.5
+	yscale 2.0
+	radius 20
+	height 24
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupSound "misc/w_pkup"
+	Tag "Electro Rifle"
+
+	States
+	{
+		Spawn:
+			ELEC E -1
+			stop
+		Pickup:
+			TNT1 A 0 A_GiveInventory("ElectromanGun",1)
+			TNT1 A 0 A_TakeInventory("Lightning_Spell",1)
+			Stop
+	}
+}
+
+actor ElectromanGun : HocusZWeapon 
+{
+	+WEAPON.CHEATNOTWEAPON
+	//$Category ZDecoration-Y: Electroman
+	//Obituary "%o was ripped by %k's lightning bolt."
+	Tag "Electro Rifle"
+	xscale 2.5
+	yscale 2.0
+	//+WEAPON.NOAUTOFIRE
+
+	weapon.slotnumber 3
+	weapon.ammouse1 1
+	weapon.ammotype1 "ElectroUpgrade"
+
+	States
+	{
+		Spawn:
+			ELEC E -1
+			Stop
+		Ready:
+			ELEC A 1 A_WeaponReady
+			ELEC A 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			Loop
+		Deselect:
+			ELEC AA 0 A_Lower
+			ELEC A 1 A_Lower
+			Loop
+		Select:
+			ELEC AA 0 A_Raise
+			ELEC A 1 A_Raise
+			Loop
+		Fire:
+			ELEC B 0 A_GunFlash	
+			ELEC A 0 A_JumpIfNoAmmo("Shot0")
+			ELEC A 1	  
+
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",251,"Shot6")  	
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",201,"Shot5")  	
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",151,"Shot4")  	
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",101,"Shot3")  	
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",51,"Shot2") 	
+			ELEC A 0 A_JumpIfInventory("ElectroUpgrade",1,"Shot1")  	
+
+			Shot0:
+			ELEC B 0 A_PlaySound("electroman/robofire1",CHAN_AUTO)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser1",0,1)
+			ELEC CD 2
+			Goto EndShot
+
+		Shot1:
+			ELEC B 0 A_PlaySound("electroman/robofire2",CHAN_AUTO)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser2",0,1)
+			ELEC CDA 2
+			Goto EndShot
+
+		Shot2:
+			ELEC B 0 A_PlaySound("electroman/robofire2",CHAN_AUTO)
+			ELEC B 0 bright A_FireCustomMissile("ElectroLaser2",0,0,-10,-3)
+			ELEC B 0 bright A_FireCustomMissile("ElectroLaser2",0,0,10,-3)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser2",0,1,0,9)
+			ELEC CDAA 2
+			Goto EndShot
+
+		Shot3:
+			ELEC B 0 A_PlaySound("electroman/robofire4",CHAN_AUTO)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser3",0,1)
+			ELEC CDAAA 2
+			Goto EndShot
+
+		Shot4:
+			ELEC B 0 A_PlaySound("electroman/robofire3",CHAN_AUTO)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser4",0,1)
+			ELEC CDAAAA 2
+			Goto EndShot
+
+		Shot5:
+			ELEC B 0 A_PlaySound("electroman/robofire3",CHAN_AUTO)
+			ELEC B 0 bright A_FireCustomMissile("ElectroLaser4",4,0,-4)
+			//ELEC B 0 bright A_FireCustomMissile("ElectroLaser4",-10,0)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser4",-4,1,4)
+			ELEC CDAAAAA 2
+			Goto EndShot
+
+		Shot6:
+			ELEC B 0 A_PlaySound("electroman/robofire5",CHAN_AUTO)
+			//ELEC B 3 bright A_FireCustomMissile("ElectroLaser5",0,0)
+			ELEC B 3 bright A_FireCustomMissile("ElectroLaser5",0,1)
+			ELEC CDAAAAAA 2
+			Goto EndShot
+
+		Endshot:
+			ELEC A 2
+			Goto Ready	
+
+
+
+		AltFire: //bomb
+			ELEC A 1 A_JumpIfNoAmmo("Ready")
+			ELEC A 1 Offset(0,48)
+			ELEC A 1 Offset(0,64)
+			ELEC A 1 Offset(0,80)
+			/*
+			TNT1 A 3 Offset(0,32)
+			TOSS A 1 A_PlaySound("weapons/bombtoss",CHAN_AUTO)
+			TOSS B 1
+			TOSS C 1 A_FireCustomMissile("PowerBomb",0,1,0,0,0,8)
+			TOSS DDEEEDDFGHI 1 A_WeaponReady(WRF_NOSECONDARY)
+			TNT1 A 3 A_WeaponReady(WRF_NOSECONDARY)
+			*/
+			TOSS A 0 A_ReplaceSprite("hocus_hands","TOSB")
+			"####" ABC 1
+			"####" E 1 A_PlaySound("weapons/bombtoss",CHAN_AUTO)
+			"####" G 1
+			"####" I 1 A_FireCustomMissile("PowerBomb",0,1,0,0,0,8)
+			"####" JJKKLLMMNNO 1 A_WeaponReady(WRF_NOSECONDARY)
+			"####" OP 1
+			"####" Q 1 A_WeaponReady(WRF_NOSECONDARY)
+			ELEC A 1 Offset(0,80) 
+			ELEC A 1 Offset(0,64)
+			ELEC A 1 Offset(0,48)
+			ELEC A 1 Offset(0,32)
+			Goto Ready	
+
+		Flash:
+			TNT1 A 0 A_JumpIf(GetCVAR("hocus_weapons_mf")==true, "MuzzleFlash")
+			TNT1 A 2 A_Light2
+			TNT1 A 2 A_Light1
+			TNT1 A 2 A_Light0
+			stop
+		MuzzleFlash:
+			//TNT1 A 2 A_Light2
+			ELMF A 2 A_Light2
+			ELMF A 2 A_Light1
+			TNT1 A 2 A_Light0
+			stop
+	}
+}
+
+actor EnergyCell : CustomInventory 
+{
+	//$Category ZDecoration-Y: Electroman
+	//$Color 14
+	//$NotAngled
+	+INVENTORY.ALWAYSPICKUP
+	Inventory.PickupMessage "Energy Cell"
+	Inventory.PickupSound ""
+	Scale 1.5
+	inventory.amount 1
+	
+	States
+	{
+		Spawn:
+			ELE2 F 12
+			ELE2 F 12 bright
+			loop
+		Pickup:
+			TNT1 A 0 A_PlaySound("electroman/robo1234",6)
+			TNT1 A 0 Acs_NamedExecuteAlways("AddToScore",0,1000)
+			TNT1 A 1 ACS_NamedExecuteAlways("ElectroGiver",0,0,0,0)
+			Stop
+	}
+}
+
+
+actor ElectroCounter : Inventory
+{
+	inventory.amount 1
+	inventory.maxamount 6
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 0
+			stop
+	}
+}
+
+actor ElectroUpgrade : ammo
+{
+	inventory.amount 1
+	inventory.maxamount 300
+	//inventory.backpackamount 10
+	//inventory.backpackmaxamount 60
+	-INVBAR
+	Inventory.Icon "ELE2F0"
+	States
+	{
+		Spawn:
+			ELE2 F 12
+			ELE2 F 12 bright
+			loop
+	}
+}
+
+
+actor ElectroLaser1
+{
+	DamageType "ElectroFire"
+	PROJECTILE
+	speed 40
+	scale 2.0
+	damage (1)
+	//alpha 0.95
+	//renderstyle add
+	radius 12
+	height 12
+	DeathSound "weapons/lightningspell/hit"
+	States
+	{
+		Spawn:
+			ROB2 A 0
+			ROB2 ABCDEF 2 bright Light("SmallShotGlow")
+			stop
+		Death:
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+			stop
+	}
+}
+
+actor ElectroLaser2 : ElectroLaser1
+{
+	damage (3)
+	radius 12
+	height 12
+	States
+	{
+		Spawn:
+			ROB2 G 0
+			ROB2 G 2 bright Light("SmallShotGlow")
+			loop
+		Death:
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+			stop
+	}
+}
+
+
+actor ElectroLaser3 : ElectroLaser1
+{
+	damage (4)
+	+RIPPER
+	radius 12
+	height 12
+	States
+	{
+		Spawn:
+			ROB2 H 0
+			ROB2 H 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 H 1 bright Light("SmallShotGlow")
+			ROB2 H 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 H 1 bright Light("SmallShotGlow")
+			ROB2 I 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 I 1 bright Light("SmallShotGlow")
+			ROB2 I 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 I 1 bright Light("SmallShotGlow")
+			ROB2 J 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 J 1 bright Light("SmallShotGlow")
+			ROB2 J 0 A_SpawnItemEx("BlockFucker",16,0,0)
+			ROB2 J 1 bright Light("SmallShotGlow")
+			loop
+		Death:
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+			stop
+	}
+}
+
+actor ElectroLaser4 : ElectroLaser1
+{
+	damage (5)
+	radius 12
+	height 12
+	States
+	{
+		Spawn:
+			ROB2 K 0
+			ROB2 KLMN 2 bright Light("SmallShotGlow")
+			loop
+		Death:
+			TNT1 A 0 A_Explode(5,128,0,0,128)
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+			stop
+	}
+}
+
+
+actor ElectroLaser5 : FastProjectile//.: ElectroLaser1
+{
+	DamageType "ElectroFire"
+	PROJECTILE
+	speed 40
+	scale 2.0
+	radius 12
+	height 12	
+	DeathSound "weapons/lightningspell/hit"
+	damage (10)
+	radius 12
+	height 24
+	Missiletype "Electrolaser5Poof"
+	Missileheight 8
+	States
+	{
+		Spawn:
+			ROB2 O 0 //A_SpawnItemEx("Electrolaser5Poof")
+			ROB2 O 2 bright Light("SmallShotGlow")
+			loop
+
+		Death:
+			TNT1 A 0 A_Explode(10,192,0,0,192)
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,-16,0,0,0,0,SXF_NOCHECKPOSITION)
+			TNT1 A 0 A_SpawnItemEx("ElectromanPoof",0,0,16,0,0,0,0,SXF_NOCHECKPOSITION)
+			stop
+	}
+	
+	
+}
+
+actor Electrolaser5Poof
+{
+	+NOGRAVITY
+	renderstyle add
+	alpha 0.2
+	scale 2.0
+	States
+	{
+		Spawn:
+			ROB2 O 2 A_FadeOut(0.1)
+			loop
+	}
+}

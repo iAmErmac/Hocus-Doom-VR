@@ -1,0 +1,158 @@
+
+Model ZPower_Wand
+{
+   Path "models/weapons/wand"
+   Model 0 "wand.md3"
+   Skin 0 "magicwand.png"
+   Model 1 "wand_crystal_big.md3"
+   Skin 1 "magicwand.png"
+   Scale -1.2 1.2 1.2
+   Offset 0.0 -24.0 -10.0
+   
+   //Ready
+   FrameIndex WANX A 0 0	FrameIndex WANX A 0 0
+}
+
+Model ZPower_Wand
+{
+   Path "models/weapons/wand"
+   Model 0 "wand.md3"
+   Skin 0 "magicwand.png"
+   Model 1 "wand_crystal_big.md3"
+   Skin 1 "magicwand.png"
+   Scale -1.2 1.2 1.2
+   Offset 0.0 -24.0 -10.0
+   
+   /*
+   //Fire
+   FrameIndex WANX H 0 1	FrameIndex WANX H 1 13
+   FrameIndex WANX L 0 5	FrameIndex WANX L 1 17
+   FrameIndex WANX M 0 0	FrameIndex WANX M 1 0
+   
+   Skin 0 "wand_fire.png"
+   Skin 1 "wand_fire.png"
+   FrameIndex WANX I 0 2	FrameIndex WANX I 1 14
+   FrameIndex WANX J 0 3	FrameIndex WANX J 1 15
+   FrameIndex WANX K 0 4	FrameIndex WANX K 1 16
+   */
+   
+   //Fire
+   FrameIndex WANX H 0 0	FrameIndex WANX H 1 0
+   FrameIndex WANX L 0 0	FrameIndex WANX L 1 0
+   FrameIndex WANX M 0 0	FrameIndex WANX M 1 0
+   
+   Skin 0 "wand_fire.png"
+   Skin 1 "wand_fire.png"
+   FrameIndex WANX I 0 0	FrameIndex WANX I 1 0
+   FrameIndex WANX J 0 0	FrameIndex WANX J 1 0
+   FrameIndex WANX K 0 0	FrameIndex WANX K 1 0
+}
+
+//flame mode
+Model ZPower_Wand
+{
+   Path "models/weapons/wand"
+   Model 0 "wand.md3"
+   Skin 0 "wand_fire.png"
+   Model 1 "wand_crystal_big.md3"
+   Skin 1 "wand_fire.png"
+   //Model 2 "phoenix.md3"
+   //SurfaceSkin 2 0 "phoenix_tex1.png"
+   //SurfaceSkin 2 1 "phoenix_tex2.png"
+   Scale -1.2 1.2 1.2
+   Offset 0.0 -24.0 -10.0
+   
+   //NOINTERPOLATION
+   
+   /*
+   //Fire
+   FrameIndex WANX B 0 6	FrameIndex WANX B 1 18		FrameIndex WANX B 2 0
+   FrameIndex WANX C 0 7	FrameIndex WANX C 1 19		FrameIndex WANX C 2 1
+   FrameIndex WANX D 0 8	FrameIndex WANX D 1 20		FrameIndex WANX D 2 2
+   FrameIndex WANX E 0 9	FrameIndex WANX E 1 21		FrameIndex WANX E 2 3
+   FrameIndex WANX F 0 10	FrameIndex WANX F 1 22		FrameIndex WANX F 2 4
+   FrameIndex WANX G 0 11	FrameIndex WANX G 1 23		FrameIndex WANX G 2 5
+   */
+   
+   //Fire
+   FrameIndex WANX B 0 0	FrameIndex WANX B 1 0
+   FrameIndex WANX C 0 0	FrameIndex WANX C 1 0
+   FrameIndex WANX D 0 0	FrameIndex WANX D 1 0
+   FrameIndex WANX E 0 0	FrameIndex WANX E 1 0
+   FrameIndex WANX F 0 0	FrameIndex WANX F 1 0
+   FrameIndex WANX G 0 0	FrameIndex WANX G 1 0
+}
+
+//Flash
+Model ZPower_Wand
+{
+   Path "models/weapons/wand"
+   Model 0 "wand_mf2.md3"
+   Skin 0 "wand_mf.png"
+   Scale -1.2 1.2 1.2
+   Offset 0.0 -26.0 -10.0
+   
+   //Ready
+   FrameIndex WANX N 0 0
+}
+
+//Toss bomb
+Model ZPower_Wand
+{
+   Path "models/weapons/hocus"
+   Model 0 "toss.md3"
+   Skin 0 "hands.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -15.0
+   
+   FrameIndex TOSS A 0 0
+   FrameIndex TOSS B 0 1
+   FrameIndex TOSS C 0 2
+   FrameIndex TOSS D 0 3
+   FrameIndex TOSS E 0 4
+   FrameIndex TOSS F 0 5
+   FrameIndex TOSS G 0 6
+   FrameIndex TOSS H 0 7
+   FrameIndex TOSS I 0 8
+   FrameIndex TOSS J 0 9
+   FrameIndex TOSS K 0 10
+   FrameIndex TOSS L 0 11
+   FrameIndex TOSS M 0 12
+   FrameIndex TOSS N 0 13
+   FrameIndex TOSS O 0 14
+   FrameIndex TOSS P 0 15
+   FrameIndex TOSS Q 0 16
+}
+
+//Toss bomb - Single hand model
+Model ZPower_Wand
+{
+   Path "models/weapons/hocus"
+   Model 0 "toss.md3"
+   SurfaceSkin 0 0 "no_hand.png"
+   SurfaceSkin 0 1 "hands.png"
+   SurfaceSkin 0 2 "no_hand.png"
+   SurfaceSkin 0 3 "hands.png"
+   SurfaceSkin 0 4 "no_hand.png"
+   SurfaceSkin 0 5 "hands.png"
+   Scale -0.88 0.88 0.88
+   Offset 0.0 -24.0 -15.0
+   
+   FrameIndex TOSB A 0 0
+   FrameIndex TOSB B 0 1
+   FrameIndex TOSB C 0 2
+   FrameIndex TOSB D 0 3
+   FrameIndex TOSB E 0 4
+   FrameIndex TOSB F 0 5
+   FrameIndex TOSB G 0 6
+   FrameIndex TOSB H 0 7
+   FrameIndex TOSB I 0 8
+   FrameIndex TOSB J 0 9
+   FrameIndex TOSB K 0 10
+   FrameIndex TOSB L 0 11
+   FrameIndex TOSB M 0 12
+   FrameIndex TOSB N 0 13
+   FrameIndex TOSB O 0 14
+   FrameIndex TOSB P 0 15
+   FrameIndex TOSB Q 0 16
+}

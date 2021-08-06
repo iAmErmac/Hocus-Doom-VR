@@ -1,0 +1,1629 @@
+
+
+
+actor HocusWeapon : Weapon
+{
+	Weapon.BobSpeed 2.0
+	Weapon.BobRangeX 0.294
+	Weapon.BobRangeY 0.6
+	Weapon.BobStyle Alpha
+	Weapon.SelectionOrder 1	
+	Weapon.AmmoType1 "LightningAmmo"
+	Weapon.AmmoType2 "LightningBomb"//"LightningAmmoMeter"
+	Weapon.AmmoGive 0
+	Weapon.AmmoGive2 0
+	Weapon.AmmoUse 1
+	Weapon.AmmoUse2 1
+	Weapon.Kickback 0
+	+WEAPON.AMMO_OPTIONAL
+	+WEAPON.ALT_AMMO_OPTIONAL
+	Weapon.YAdjust 24
+	weapon.slotnumber 1
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Basic Lightning Spell
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/*
+actor Lightning_Spell : HocusWeapon
+{
+	Obituary "%o was ripped by %k's lightning bolt."
+	Tag "Pocket Lightning"
+	weapon.slotnumber 1
+	+WEAPON.NOAUTOFIRE
+
+	States
+	{
+		Spawn:
+			ZNUL A -1
+			Stop
+		Ready:
+			LITE B 0 A_JumpIfInventory("LightningShotLIte",1,"Readyboof")
+			LITE A 1 A_WeaponReady
+			LITE A 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			Loop
+		
+		Readyboof:
+			LITE Y 1 A_WeaponReady
+			LITE A 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			goto Ready
+		Deselect:
+			LITE AA 0 A_Lower
+			LITE A 1 A_Lower
+			Loop
+		Select:
+			LITE AA 0 A_Raise
+			LITE A 1 A_Raise
+			Loop
+		Fire:   
+			LITE A 0 A_JumpIfNoAmmo("Ready")
+			LITE A 0 A_GiveInventory("Lightning_SpellIsFiring",10)
+			LITE A 0 A_JumpIfInventory("RapidfirePowerupEffect",1,"LightningSpellRapid")
+			LITE A 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,"LightningSpellFlamethrower")
+			LITE A 0 A_JumpIfInventory("LightningSpellJillFireball",1,"JillFireball") 
+			LITE A 0 A_JumpIfInventory("LightningSpellSuperKnife",1,"SuperKnife") 
+			LITE A 0 A_JumpIfInventory("LightningSpellSaw",1,"Saw")  
+			LITE A 0 A_JumpIfInventory("LightningSpellKnife",1,"Knife")   
+			LITE B 0 A_GunFlash	
+			//LITE B 0 A_TakeInventory("LightningAmmoMeter",1,TIF_NOTAKEINFINITE)
+			LITE A 0 A_JumpIfInventory("LightningSpellFireball",1,"Fireball")  
+			LITE A 0 A_JumpIfInventory("LightningSpellLaser",1,"Laser")	 
+			LITE A 0 A_JumpIfInventory("LightningSpellPower",1,"Power")	 
+			LITE A 0 A_JumpIfInventory("LightningSpellSplitter",1,"Splitter")	 
+			LITE A 0 A_JumpIfInventory("LightningSpellFollower",1,"Follower") 
+			LITE B 0 A_PlaySound("weapons/lightningspell/fire",CHAN_AUTO)
+			
+			
+			
+			//LightningAmmoMeterMax
+			
+			LITE B 0 A_JumpIfInventory("LightningAmmoMeterMax",2,1)			
+			goto Reggofire
+			
+			LITE B 0 A_JumpIf(CallACS("LightningExtraShot")==1,"RightExtra")
+			goto Reggofire
+			//LightningShotSide			
+			
+			RightExtra:
+			LITE B 0 A_JumpIfInventory("LightningShotSide",1,"LeftExtra")
+			LITE B 0 bright A_FireCustomMissile("LightningShot",-1,0)
+			LITE B 0 A_GiveInventory("LightningShotSide",1)
+			goto Reggofire
+			
+			LeftExtra:
+			LITE B 0 bright A_FireCustomMissile("LightningShot",1,0)
+			LITE B 0 A_TakeInventory("LightningShotSide",2)
+			
+			Reggofire:
+			LITE B 1 bright A_FireCustomMissile("LightningShot",0,1)
+			
+		Endshot:
+			LITE C 1 bright A_WeaponReady
+			LITE F 0 A_JumpIfNoAmmo("EndshotLow")	
+			LITE F 1 A_WeaponReady
+			LITE GH 3 A_WeaponReady	
+			LITE A 5 A_WeaponReady			
+			LITE A 0 A_Refire
+			Goto Ready	
+			
+		Endshot2:
+			LITE E 1 bright A_WeaponReady
+			LITE F 0 A_JumpIfNoAmmo("EndshotLow2")	
+			LITE J 1 A_WeaponReady
+			LITE K 3 A_WeaponReady	
+			LITE A 5 A_WeaponReady	
+			LITE A 0 A_Refire
+			Goto Ready	
+		
+		EndshotLow:
+			LITE FG 3 
+			LITE H 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			LITE H 3 A_WeaponReady	
+			LITE A 5 A_WeaponReady	
+			LITE A 0 A_Refire
+			Goto Ready	
+		EndshotLow2:
+			LITE JK 3 
+			LITE H 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			//LITE H 3 A_WeaponReady	
+			LITE A 5 A_WeaponReady	
+			LITE A 0 A_Refire
+			Goto Ready	
+
+		Splitter:
+			LITE B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			LITE B 0 A_TakeInventory("LightningSpellSplitter",1,TIF_NOTAKEINFINITE)
+			LITE B 0 bright A_FireCustomMissile("LightningSplitshot",-8,0,-8,0)
+			LITE B 0 bright A_FireCustomMissile("LightningSplitshot",8,0,8,0)
+			LITE D 1 bright A_FireCustomMissile("LightningSplitshot",0,1,0,8)
+			Goto Endshot2
+
+		Laser:
+			LITE B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			LITE B 0 A_TakeInventory("LightningSpellLaser",1,TIF_NOTAKEINFINITE)
+			LITE D 1 bright A_FireCustomMissile("LaserShot",0,1)
+			Goto Endshot2
+
+		Power:
+			LITE B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			LITE B 0 A_TakeInventory("LightningSpellPower",1,TIF_NOTAKEINFINITE)
+			LITE D 1 bright A_FireCustomMissile("LightningPowerShot",0,1)
+			Goto Endshot2
+
+		Fireball:
+			LITE B 0 A_PlayWeaponSound("weapons/lightningspell/powerfire")
+			LITE B 0 A_TakeInventory("LightningSpellFireball",1,TIF_NOTAKEINFINITE)
+			LITE D 1 bright A_FireCustomMissile("LightningFireBall",0,1)
+			Goto Endshot2
+
+		Follower:
+			LITE B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			LITE B 0 A_TakeInventory("LightningSpellFollower",1,TIF_NOTAKEINFINITE)
+			LITE B 0 bright A_FireCustomMissile("RicochetShot",0,0,-8)
+			LITE D 1 bright A_FireCustomMissile("RicochetShotB",0,1,8)
+			Goto Endshot2
+
+		//jill secret
+		Knife:
+			/-*
+			LITE UL 1
+			LITE MN 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			LITE A 0 A_TakeInventory("LightningSpellKnife",1,TIF_NOTAKEINFINITE)
+			LITE O 2 A_FireCustomMissile("JILLKnifeshot",0,1)
+			LITE PPQQRR 1 A_WeaponReady
+			//TNT1 A 2 A_WeaponReady
+			LITE S 2 A_WeaponReady
+			LITE SS 1 A_WeaponReady
+			*-/
+			JTHR ABC 1
+			JTHR D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			JTHR E 0 A_TakeInventory("LightningSpellKnife",1,TIF_NOTAKEINFINITE)
+			JTHR E 1
+			JTHR F 1 A_FireCustomMissile("JILLKnifeshot",0,1)
+			JTHR EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+		Saw:
+			/-*
+			LITE ULMN 1
+			LITE A 0 A_PlaySound("jill/fireball",CHAN_AUTO)
+			LITE A 0 A_TakeInventory("LightningSpellSaw",1,TIF_NOTAKEINFINITE)
+			LITE O 2 A_FireCustomMissile("JILLKrullshot",0,1)
+			LITE PPQQRR 1 A_WeaponReady
+			//TNT1 A 2 A_WeaponReady
+			LITE S 2 A_WeaponReady
+			LITE SS 1 A_WeaponReady
+			*-/
+			JTHR ABC 1
+			JTHR D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			JTHR E 0 A_TakeInventory("LightningSpellSaw",1,TIF_NOTAKEINFINITE)
+			JTHR E 1
+			JTHR F 1 A_FireCustomMissile("JILLKrullshot",0,1)
+			JTHR EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+		SuperKnife:
+			/-*
+			LITE ULMN 1
+			LITE A 0 A_PlaySound("jill/fireball",CHAN_AUTO)
+			LITE A 0 A_TakeInventory("LightningSpellSuperKnife",1,TIF_NOTAKEINFINITE)
+			//LITE O 0 A_FireCustomMissile("JILLSuperKnifeshot",-16,0)
+			//LITE O 0 A_FireCustomMissile("JILLSuperKnifeshot",16,0)
+			//LITE O 0 A_FireCustomMissile("JILLSuperKnifeshot",-8,0)
+			//LITE O 0 A_FireCustomMissile("JILLSuperKnifeshot",8,0)
+			//LITE O 2 A_FireCustomMissile("JILLSuperKnifeshot",0,1)
+			
+			
+			LITE OO 0 A_FireCustomMissile("JILLSuperKnifeshot",frandom(-1,1),0,frandom(-48,48),frandom(-24,24))
+			LITE O 2 A_FireCustomMissile("JILLSuperKnifeshot",0,1)
+			LITE PPQQRR 1 A_WeaponReady
+			//TNT1 A 2 A_WeaponReady
+			LITE S 2 A_WeaponReady
+			LITE SS 1 A_WeaponReady
+			*-/
+			JTHR ABC 1
+			JTHR D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			JTHR E 0 A_TakeInventory("LightningSpellSuperKnife",1,TIF_NOTAKEINFINITE)
+			JTHR E 1
+			JTHR FF 0 A_FireCustomMissile("JILLSuperKnifeshot",frandom(-1,1),0,frandom(-48,48),frandom(-24,24))
+			JTHR F 1 A_FireCustomMissile("JILLSuperKnifeshot",0,1)
+			JTHR EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+			
+		JillFireball:			
+			LITE A 0 A_PlaySound("jill/fireball",CHAN_AUTO)
+			LITE A 0 A_TakeInventory("LightningSpellJillFireball",1,TIF_NOTAKEINFINITE)
+			LITE B 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",0,1)
+			LITE CBCBCB 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",random(-4,4),0)
+			LITE B 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",random(-2,2),0)
+			LITE C 1 bright A_WeaponReady
+			LITE F 1 A_WeaponReady
+			LITE GH 3 A_WeaponReady
+			Goto Ready	
+
+		LightningSpellRapid:
+			LITE D 0 A_JumpIfInventory("RapidfirePowerupEffect",1,1)
+			goto Fire		
+			LITE AHG 3		
+		LightningSpellRapidRefire:
+			LITE B 0 A_JumpIfInventory("RapidfirePowerupEffect",1,1)
+			goto Fire+5
+			LITE B 0 A_GunFlash	
+			LITE B 0 A_PlaySound("monster/shot",CHAN_WEAPON)
+			LITE B 0 A_Jump(128,3)
+			LITE B 1 bright A_FireCustomMissile("LightningShot",0,0)	
+			LITE B 0 A_Jump(256,2)  
+			LITE C 1 bright A_FireCustomMissile("LightningShot",0,0)	
+			LITE B 0
+			LITE C 1 bright A_PlaySound("monster/shot",CHAN_WEAPON)
+		EndshotRapid:
+			LITE D 0 A_ReFire("LightningSpellRapidRefire")
+			LITE GH 3 A_WeaponReady
+			Goto Ready
+
+
+
+		LightningSpellFlamethrower:
+			LITE D 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,1)
+			goto Fire		
+			LITE AHG 3		
+		LightningSpellFlamethrowerRefire:
+			LITE B 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,1)
+			goto Fire+5
+			LITE B 0 A_GunFlash	
+			//LITE B 0 A_PlaySound("misc/foomf",CHAN_AUTO)
+			LITE B 0 A_Jump(128,3)
+			LITE B 1 bright A_FireCustomMissile("FlamethrowerShot",0,0,frandom(-4,4),frandom(-1,1))
+			LITE B 0 A_Jump(256,2)  
+			LITE C 1 bright A_FireCustomMissile("FlamethrowerShot",0,0,frandom(-4,4),frandom(-1,1))	
+			LITE B 0 //A_FireCustomMissile("FlamethrowerShot",0,0)	
+			//LITE C 1 bright //A_PlaySound("monster/shot",CHAN_WEAPON)
+		EndshotFlamethrower:
+			LITE D 0 A_ReFire("LightningSpellFlamethrowerRefire")
+			LITE GH 3 A_WeaponReady
+			Goto Ready
+
+		AltFire: //bomb
+			LITE A 1 A_JumpIfNoAmmo("Ready")
+			/-*
+			LITE A 1 Offset(0,48)
+			LITE A 1 Offset(0,64)
+			LITE A 1 Offset(0,80)
+			TNT1 A 3 Offset(0,32)
+			TOSS A 1 A_PlaySound("weapons/bombtoss",CHAN_AUTO)
+			TOSS B 1
+			TOSS C 1 A_FireCustomMissile("PowerBomb",0,1,0,0,0,8)
+			TOSS DDEEEDDFGHI 1 A_WeaponReady(WRF_NOSECONDARY)
+			TNT1 A 3 A_WeaponReady(WRF_NOSECONDARY)
+			LITE A 1 Offset(0,80) 
+			LITE A 1 Offset(0,64)
+			LITE A 1 Offset(0,48)
+			LITE A 1 Offset(0,32)
+			*-/
+			TOSS ABCDEF 1
+			TOSS G 1 A_PlaySound("weapons/bombtoss",CHAN_AUTO)
+			TOSS H 1
+			TOSS I 1 A_FireCustomMissile("PowerBomb",0,1,0,0,0,8)
+			TOSS JJKKLLMMNNO 1 A_WeaponReady(WRF_NOSECONDARY)
+			TOSS OP 1
+			TOSS P 1 A_WeaponReady(WRF_NOSECONDARY)
+			TOSS Q 4
+			Goto Ready	
+
+
+		Flash:
+			TNT1 A 2 A_Light2
+			TNT1 A 2 A_Light1
+			TNT1 A 2 A_Light0
+			stop
+	}
+}
+*/
+
+actor Lightning_Spell : HocusZWeapon
+{
+	Obituary "%o was ripped by %k's lightning bolt."
+	Tag "Pocket Lightning"
+	weapon.slotnumber 1
+	+WEAPON.NOAUTOFIRE
+
+	States
+	{
+		Spawn:
+			ZOP2 E -1
+			Stop
+		Ready:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_JumpIfInventory("LightningShotLIte",1,"Readyboof")
+			"####" A 1 A_WeaponReady
+			"####" A 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			Loop
+		
+		Readyboof:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" Y 1 A_WeaponReady
+			"####" A 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			goto Ready
+		Deselect:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" AA 0 A_Lower
+			"####" A 1 A_Lower
+			Loop
+		Select:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" AA 0 A_Raise
+			"####" A 1 A_Raise
+			Loop
+		Fire:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" A 0 A_JumpIfNoAmmo("Ready")
+			"####" A 0 A_GiveInventory("Lightning_SpellIsFiring",10)
+			"####" A 0 A_JumpIfInventory("RapidfirePowerupEffect",1,"LightningSpellRapid")
+			"####" A 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,"LightningSpellFlamethrower")
+			"####" A 0 A_JumpIfInventory("LightningSpellJillFireball",1,"JillFireball") 
+			"####" A 0 A_JumpIfInventory("LightningSpellSuperKnife",1,"SuperKnife") 
+			"####" A 0 A_JumpIfInventory("LightningSpellSaw",1,"Saw")  
+			"####" A 0 A_JumpIfInventory("LightningSpellKnife",1,"Knife")   
+			"####" B 0 A_GunFlash
+			"####" A 0 A_JumpIfInventory("LightningSpellFireball",1,"Fireball")  
+			"####" A 0 A_JumpIfInventory("LightningSpellLaser",1,"Laser")	 
+			"####" A 0 A_JumpIfInventory("LightningSpellPower",1,"Power")	 
+			"####" A 0 A_JumpIfInventory("LightningSpellSplitter",1,"Splitter")	 
+			"####" A 0 A_JumpIfInventory("LightningSpellFollower",1,"Follower") 
+			"####" B 0 A_PlaySound("weapons/lightningspell/fire",CHAN_AUTO)
+			
+			//LightningAmmoMeterMax
+			
+			"####" B 0 A_JumpIfInventory("LightningAmmoMeterMax",2,1)			
+			goto Reggofire
+			
+			"####" B 0 A_JumpIf(CallACS("LightningExtraShot")==1,"RightExtra")
+			goto Reggofire	
+			
+			RightExtra:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_JumpIfInventory("LightningShotSide",1,"LeftExtra")
+			"####" B 0 bright A_FireCustomMissile("LightningShot",-1,0)
+			"####" B 0 A_GiveInventory("LightningShotSide",1)
+			goto Reggofire
+			
+			LeftExtra:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 bright A_FireCustomMissile("LightningShot",1,0)
+			"####" B 0 A_TakeInventory("LightningShotSide",2)
+			
+			Reggofire:
+			"####" B 1 bright A_FireCustomMissile("LightningShot",0,1)
+			
+		Endshot:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" C 1 bright A_WeaponReady
+			"####" F 0 A_JumpIfNoAmmo("EndshotLow")	
+			"####" F 1 A_WeaponReady
+			"####" GH 3 A_WeaponReady	
+			"####" A 5 A_WeaponReady			
+			"####" A 0 A_Refire
+			Goto Ready	
+			
+		Endshot2:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" E 1 bright A_WeaponReady
+			"####" F 0 A_JumpIfNoAmmo("EndshotLow2")	
+			"####" J 1 A_WeaponReady
+			"####" K 3 A_WeaponReady	
+			"####" A 5 A_WeaponReady	
+			"####" A 0 A_Refire
+			Goto Ready	
+		
+		EndshotLow:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" FG 3 
+			"####" H 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			"####" H 3 A_WeaponReady	
+			"####" A 5 A_WeaponReady	
+			"####" A 0 A_Refire
+			Goto Ready	
+		EndshotLow2:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" JK 3 
+			"####" H 0 A_TakeInventory("Lightning_SpellIsFiring",999999999)
+			"####" A 5 A_WeaponReady	
+			"####" A 0 A_Refire
+			Goto Ready	
+
+		Splitter:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			"####" B 0 A_TakeInventory("LightningSpellSplitter",1,TIF_NOTAKEINFINITE)
+			"####" B 0 bright A_FireCustomMissile("LightningSplitshot",-8,0,-8,0)
+			"####" B 0 bright A_FireCustomMissile("LightningSplitshot",8,0,8,0)
+			"####" D 1 bright A_FireCustomMissile("LightningSplitshot",0,1,0,8)
+			Goto Endshot2
+
+		Laser:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			"####" B 0 A_TakeInventory("LightningSpellLaser",1,TIF_NOTAKEINFINITE)
+			"####" D 1 bright A_FireCustomMissile("LaserShot",0,1)
+			Goto Endshot2
+
+		Power:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			"####" B 0 A_TakeInventory("LightningSpellPower",1,TIF_NOTAKEINFINITE)
+			"####" D 1 bright A_FireCustomMissile("LightningPowerShot",0,1)
+			Goto Endshot2
+
+		Fireball:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_PlayWeaponSound("weapons/lightningspell/powerfire")
+			"####" B 0 A_TakeInventory("LightningSpellFireball",1,TIF_NOTAKEINFINITE)
+			"####" D 1 bright A_FireCustomMissile("LightningFireBall",0,1)
+			Goto Endshot2
+
+		Follower:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_PlaySound("weapons/lightningspell/powerfire",CHAN_AUTO)
+			"####" B 0 A_TakeInventory("LightningSpellFollower",1,TIF_NOTAKEINFINITE)
+			"####" B 0 bright A_FireCustomMissile("RicochetShot",0,0,-8)
+			"####" D 1 bright A_FireCustomMissile("RicochetShotB",0,1,8)
+			Goto Endshot2
+
+		//jill secret
+		Knife:
+			JTHR A 0 A_ReplaceSprite("hocus_hands","JTHB")
+			"####" ABC 1
+			"####" D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			"####" E 0 A_TakeInventory("LightningSpellKnife",1,TIF_NOTAKEINFINITE)
+			"####" E 1
+			"####" F 1 A_FireCustomMissile("JILLKnifeshot",0,1)
+			"####" EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+		Saw:
+			JTHR A 0 A_ReplaceSprite("hocus_hands","JTHB")
+			"####" ABC 1
+			"####" D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			"####" E 0 A_TakeInventory("LightningSpellSaw",1,TIF_NOTAKEINFINITE)
+			"####" E 1
+			"####" F 1 A_FireCustomMissile("JILLKrullshot",0,1)
+			"####" EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+		SuperKnife:
+			JTHR A 0 A_ReplaceSprite("hocus_hands","JTHB")
+			"####" ABC 1
+			"####" D 1 A_PlaySound("jill/fireball",CHAN_AUTO)
+			"####" E 0 A_TakeInventory("LightningSpellSuperKnife",1,TIF_NOTAKEINFINITE)
+			"####" E 1
+			"####" FF 0 A_FireCustomMissile("JILLSuperKnifeshot",frandom(-1,1),0,frandom(-48,48),frandom(-24,24))
+			"####" F 1 A_FireCustomMissile("JILLSuperKnifeshot",0,1)
+			"####" EEDDCCBBAA 1 A_WeaponReady
+			Goto Ready	
+			
+		JillFireball:			
+			"####" A 0 A_PlaySound("jill/fireball",CHAN_AUTO)
+			"####" A 0 A_TakeInventory("LightningSpellJillFireball",1,TIF_NOTAKEINFINITE)
+			"####" B 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",0,1)
+			"####" CBCBCB 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",random(-4,4),0)
+			"####" B 1 BRIGHT A_FireCustomMissile("JILLPlayerFireballShot",random(-2,2),0)
+			"####" C 1 bright A_WeaponReady
+			"####" F 1 A_WeaponReady
+			"####" GH 3 A_WeaponReady
+			Goto Ready	
+
+		LightningSpellRapid:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" D 0 A_JumpIfInventory("RapidfirePowerupEffect",1,1)
+			goto Fire		
+			"####" AHG 3		
+		LightningSpellRapidRefire:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_JumpIfInventory("RapidfirePowerupEffect",1,1)
+			goto Fire+5
+			"####" B 0 A_GunFlash	
+			"####" B 0 A_PlaySound("monster/shot",CHAN_WEAPON)
+			"####" B 0 A_Jump(128,3)
+			"####" B 1 bright A_FireCustomMissile("LightningShot",0,0)	
+			"####" B 0 A_Jump(256,2)  
+			"####" C 1 bright A_FireCustomMissile("LightningShot",0,0)	
+			"####" B 0
+			"####" C 1 bright A_PlaySound("monster/shot",CHAN_WEAPON)
+		EndshotRapid:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" D 0 A_ReFire("LightningSpellRapidRefire")
+			"####" GH 3 A_WeaponReady
+			Goto Ready
+
+		LightningSpellFlamethrower:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" D 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,1)
+			goto Fire		
+			"####" AHG 3		
+		LightningSpellFlamethrowerRefire:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" B 0 A_JumpIfInventory("FlamethrowerPowerupEffect",1,1)
+			goto Fire+5
+			"####" B 0 A_GunFlash	
+			"####" B 0 A_Jump(128,3)
+			"####" B 1 bright A_FireCustomMissile("FlamethrowerShot",0,0,frandom(-4,4),frandom(-1,1))
+			"####" B 0 A_Jump(256,2)  
+			"####" C 1 bright A_FireCustomMissile("FlamethrowerShot",0,0,frandom(-4,4),frandom(-1,1))	
+			"####" B 0 //A_FireCustomMissile("FlamethrowerShot",0,0)	
+		EndshotFlamethrower:
+			LITE A 0 A_ReplaceSprite("hocus_hands","LITB")
+			"####" D 0 A_ReFire("LightningSpellFlamethrowerRefire")
+			"####" GH 3 A_WeaponReady
+			Goto Ready
+
+		AltFire: //bomb
+			TOSS A 0 A_ReplaceSprite("hocus_hands","TOSB")
+			"####" A 1 A_JumpIfNoAmmo("Ready")
+			"####" ABCDEF 1
+			"####" G 1 A_PlaySound("weapons/bombtoss",CHAN_AUTO)
+			"####" H 1
+			"####" I 1 A_FireCustomMissile("PowerBomb",0,1,0,0,0,8)
+			"####" JJKKLLMMNNO 1 A_WeaponReady(WRF_NOSECONDARY)
+			"####" OP 1
+			"####" P 1 A_WeaponReady(WRF_NOSECONDARY)
+			"####" Q 4
+			Goto Ready
+
+		Flash:
+			TNT1 A 2 A_Light2
+			TNT1 A 2 A_Light1
+			TNT1 A 2 A_Light0
+			stop
+			
+		Dummy:
+			LITB ABCDEFGHIJKY 0
+			TOSB ABCDEFGHIJKLMNOPQ 0
+			JTHB ABCDEF 0
+			Stop
+	}
+}
+
+actor LightningSpellUpgrade : Inventory
+{
+	inventory.amount 1
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+
+actor RapidfirePowerupEffect : Inventory//ammo
+{
+	inventory.maxamount 2
+	inventory.amount 1
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 4
+			loop
+	}
+}
+
+actor RapidfirePowerupVisible : RapidfirePowerupEffect {}
+
+
+actor FlamethrowerPowerupEffect : Inventory//ammo
+{
+	inventory.maxamount 2
+	inventory.amount 1
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 4
+			loop
+	}
+}
+
+actor FlamethrowerPowerupVisible : FlamethrowerPowerupEffect {}
+
+
+
+
+
+actor LightningSpellSplitter : Inventory
+{
+	inventory.amount 30
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellSplitterVisible : LightningSpellSplitter {}
+
+actor LightningSpellLaser : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+
+actor LightningSpellLaserVisible : LightningSpellLaser {}
+
+actor LightningSpellPower : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellPowerVisible : LightningSpellPower {}
+
+actor LightningSpellFireball : Inventory
+{
+	inventory.amount 3
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellFireballVisible : LightningSpellFireball {}
+
+actor LightningSpellFollower : Inventory
+{
+	inventory.amount 20
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellFollowerVisible : LightningSpellFollower {}
+
+
+actor LightningSpellKnife : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellKnifeVisible : LightningSpellKnife {}
+
+
+actor LightningSpellSuperKnife : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellSuperKnifeVisible : LightningSpellSuperKnife {}
+
+actor LightningSpellSaw : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellSawVisible : LightningSpellSaw {}
+
+actor LightningSpellJillFireball : Inventory
+{
+	inventory.amount 10
+	inventory.Maxamount 100
+	-INVBAR
+	Inventory.Icon TNT1A0
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			loop
+	}
+}
+actor LightningSpellJillFireballVisible : LightningSpellJillFireball {}
+
+
+
+
+
+
+//shots----------------------------------------
+
+actor LightningShot
+{
+	DamageType "PlayerFire"
+	PROJECTILE
+	speed 40
+	scale 2.0
+	damage (1)
+	alpha 0.95
+	renderstyle add
+	radius 12
+	height 12
+	+SEEKERMISSILE
+	+NODAMAGETHRUST
+	DeathSound "weapons/lightningspell/hit"
+	States
+	{	
+		Spawn:
+			ZOOP E 0
+			ZOOP E 0 bright A_SeekerMissile(0,2)
+			ZOOP EEE 1 bright Light("SmallShotGlow")
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			goto spawn
+		XDeath:		
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",1)
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+		Death:
+			PULS A 0 A_SetScale(1.6)
+			PULS A 0 A_ChangeFlag(FORCEXYBILLBOARD,1)
+			PULS A 0 A_SpawnItemEx("YellowpoofBurst")				
+			PULS A 0 A_ChangeFlag("ROLLSPRITE",1)
+			PULS ABCD 2 bright A_SetRoll(roll+22,SPF_INTERPOLATE)
+			stop
+	}
+}
+
+//not used?
+actor LightningTrail
+{
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	alpha 0.55
+	renderstyle add
+	scale 0.3
+	+FORCEXYBILLBOARD
+	States
+	{
+		Spawn:
+			PULS A 0
+			PULS A 0 A_Jump(128,"Death2")			
+			PULS ABCD 2 bright A_FadeOut(0.1)
+			stop
+		Death2:
+			PULS EFGH 2 bright A_FadeOut(0.1)
+			stop
+			
+	}
+}
+
+actor LightningSplitshot : LightningShot
+{
+	scale 1.0
+	States
+	{
+		Spawn:
+			ZOOP A 0
+			ZOOP A 0 bright A_SeekerMissile(0,2)
+			ZOOP AAA 1 bright Light("SmallShotGlow")
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			goto Spawn		
+		//XDeath:		
+		//	TNT1 A 0 A_GiveToTarget("PowerAmmo",5)
+		//	TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+		//	goto super::Death
+	}
+}
+
+actor LightningShotX : LightningShot { +EXTREMEDEATH }
+
+actor LightningPowerShot : LightningShot
+{
+	scale 2.0
+	damage (4)
+	+EXTREMEDEATH
+	+ROLLSPRITE
+	States
+	{
+		Spawn:
+			PULS A 0 bright A_SeekerMissile(0,2)
+			PULS ABCDCB 1 bright Light("SmallShotGlow") A_SetRoll(roll+22,SPF_INTERPOLATE)//A_SpawnItemEx("BigLightningTrail")
+
+			//PULS ABEF 1 bright Light("SmallShotGlow") A_SpawnItemEx("BigLightningTrail")
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			goto Spawn
+			
+		XDeath:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",5)
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+		Death:
+			TNT1 A 0 A_PlaySound("monster/shot")
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,0,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,36,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,72,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,108,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,144,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,180,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,216,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,252,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,288,2)
+			TNT1 A 0 A_CustomMissile("LightningShotX",0,0,324,2)
+			PULS A 0 A_SetScale(4.2)
+			goto super::Death+1		
+	}
+}
+
+//not used?
+actor BigLightningTrail : LightningTrail { scale 0.5 }
+
+actor LightningFireBall : LightningShot //replaces rocket
+{
+	scale 2.0
+	damage (10)
+	+RIPPER
+	+NOBOSSRIP
+	+EXTREMEDEATH
+	DeathSound "monster/death"
+	RenderStyle Translucent
+	alpha 0.8
+	States
+	{
+		Spawn:
+			ZOOP D 0
+			ZOOP DD 0 A_SpawnItemEx("BlockFucker",16,frandom(-128,128),frandom(-128,128))			
+			ZOOP D 0 A_SpawnItemEx("BlockFucker",16)			
+			//LightningFireballTrail2
+			ZOOP D 0 A_SpawnItemEx("LightningFireballTrail2",frandom(-1,1),frandom(-1,1),frandom(-1,1),frandom(-4,4),frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP D 1 bright Light("BigShotGlow") A_SpawnItemEx("Firepuff",frandom(-1,1),frandom(-1,1),frandom(-1,1),0,frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP DD 0 A_SpawnItemEx("BlockFucker",16,frandom(-128,128),frandom(-128,128))			
+			ZOOP D 0 A_SpawnItemEx("BlockFucker",16)			
+			ZOOP D 0 A_Explode((10),144,0)
+			
+			ZOOP D 0 A_SpawnItemEx("LightningFireballTrail2",frandom(-1,1),frandom(-1,1),frandom(-1,1),frandom(-4,4),frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP D 1 bright Light("BigShotGlow") A_SpawnItemEx("Firepuff",frandom(-1,1),frandom(-1,1),frandom(-1,1),0,frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP DD 0 A_SpawnItemEx("BlockFucker",16,frandom(-128,128),frandom(-128,128))			
+			ZOOP D 0 A_SpawnItemEx("BlockFucker",16)			
+			ZOOP D 0 A_Explode((10),144,0)
+			
+			ZOOP D 0 A_SpawnItemEx("LightningFireballTrail2",frandom(-1,1),frandom(-1,1),frandom(-1,1),frandom(-4,4),frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP D 1 bright Light("BigShotGlow") A_SpawnItemEx("Firepuff",frandom(-1,1),frandom(-1,1),frandom(-1,1),0,frandom(-0.2,0.2),frandom(-0.2,0.2))
+			ZOOP DD 0 A_SpawnItemEx("BlockFucker",16,frandom(-128,128),frandom(-128,128))			
+			ZOOP D 0 A_SpawnItemEx("BlockFucker",16)	
+			ZOOP D 0 A_Explode((10),144,0)
+			
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			goto Spawn
+			
+		XDeath:
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",10)
+		Death:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",50)
+			ZOOP D 0 A_Explode((10),64,0)
+			PULS A 0 A_ChangeFlag(FORCEXYBILLBOARD,1)
+			PULS A 0 A_SetScale(1.1)
+			PULS A 0 A_SpawnItemEx("YellowpoofBurst")	
+			DMFX DEFGH 3 bright A_FadeOut(0.1)
+			stop
+		
+	}
+}
+
+
+ACTOR Firepuff
+{
+	Radius 6
+	Height 8
+	scale 1.5
+	RenderStyle Translucent
+	alpha 0.8
+	+NOGRAVITY
+	States
+	{
+		Spawn:
+			TNT1 A 1
+			//FX09 GGHHIIJJKK 2 BRIGHT //A_FadeOut(0.05)
+			FX09 ABCDEEFF 2 BRIGHT //A_FadeOut(0.05)
+			Stop
+	}
+}
+
+
+
+ACTOR FlamethrowerShot : PhoenixFX2
+{
+	DamageType "PlayerFire"
+	Radius 6
+	Height 8
+	Speed 30
+	Damage (1)
+	Projectile
+	scale 1.5
+	RenderStyle Translucent
+	alpha 0.8
+	SeeSound "misc/foomf"
+	DeathSound "weapons/lightningspell/hit"
+	+SEEKERMISSILE
+	+NODAMAGETHRUST
+
+	States
+	{
+		Spawn:
+			FX09 ABABA 2 BRIGHT Light("SmallShotGlow") A_SeekerMissile(0,2)
+			FX09 B 2 BRIGHT Light("SmallShotGlow")  A_FlameEnd
+			FX09 CD 2 BRIGHT
+			FX09 D 0 A_ChangeFlag("NOINTERACTION",1)
+			FX09 EEFF 2 BRIGHT
+			Stop
+		XDeath:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",1)
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+		Death:
+			FX09 G 3 BRIGHT Light("SmallShotGlow") 
+			FX09 H 3 BRIGHT Light("SmallShotGlow") A_FloatPuff
+			TNT1 D 0 A_SpawnItemEx("FlamethrowerGround",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS,128)	
+			TNT1 D 0 A_SpawnItemEx("BlockFucker",16,0,0)	
+			FX09 I 4 BRIGHT
+			FX09 JK 5 BRIGHT
+			Stop
+	}
+}
+
+
+
+
+actor FlamethrowerShotZ
+{
+	DamageType "PlayerFlame"
+	PROJECTILE
+	speed 65
+	scale 0.5
+	damage (1)
+	alpha 0.95
+	renderstyle add
+	radius 12
+	height 12
+	gravity 0.724
+	-NOGRAVITY
+	+NODAMAGETHRUST
+	DeathSound "weapons/lightningspell/hit"
+	States
+	{	
+		Spawn:
+			DMFX D 0
+			DMFX DEFGH 3 bright Light("SmallShotGlow") A_SpawnItemEx("LightningFireballTrail2",frandom(-1,1),frandom(-1,1),frandom(-1,1),0,frandom(-0.2,0.2),frandom(-0.2,0.2))//A_FadeOut(0.1)
+			stop
+		XDeath:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",1)
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+		Death:
+			TNT1 D 0 A_SpawnItemEx("FlamethrowerGround",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)//,192)	
+			TNT1 D 0 A_SpawnItemEx("BlockFucker",16,0,0)			
+			TNT1 A 0 A_SpawnItemEx("YellowpoofBurst")
+			stop
+	}
+}
+
+actor FlamethrowerGround
+{
+	DamageType "PlayerFlame"
+	Mass 100000000
+	+BRIGHT
+	height 16
+	radius 16
+	+DONTSPLASH
+	+NODAMAGETHRUST
+	+FORCERADIUSDMG
+	+OLDRADIUSDMG
+	//renderstyle add
+	
+	RenderStyle Translucent
+	Alpha 0.8
+	scale 0.1
+	States
+    {
+		Spawn:
+			FIRX A 0
+			FIRX BDCFAC 3 bright Light("SmallShotGlow") A_SetScale(scalex+0.12)
+			FIRX ABDCF 3 bright Light("SmallShotGlow") 
+			FIRX A 0 A_Explode((1),160,0,0,160)
+			FIRX BDCFA 3 bright Light("SmallShotGlow") 
+			FIRX A 0 A_Explode((1),160,0,0,160)
+			FIRX DBCFA 3 bright Light("SmallShotGlow") 
+			FIRX A 0 A_Explode((1),160,0,0,160)
+			FIRX BCDFA 3 bright Light("SmallShotGlow") 
+			FIRX A 0 A_Explode((1),160,0,0,160)
+			FIRX CBFAD 3 bright Light("SmallShotGlow") 		
+			FIRX CBCEABECAD 3 bright A_SetScale(scalex-0.1)
+			
+			stop
+	}
+}
+
+
+
+
+
+
+
+
+
+actor BlockFucker
+{
+	DamageType "IHateBlocks"
+	+INVISIBLE
+	+NOGRAVITY
+	+NODAMAGETHRUST
+	States
+	{
+		Spawn:
+			ZOOP D 0
+			ZOOP D random(3,10) A_Explode((2),64,0,0,8)
+		stop
+	}
+}
+actor BlockFucker2
+{
+	DamageType "IHateBlocks"
+	+INVISIBLE
+	+NOGRAVITY
+	+NODAMAGETHRUST
+	States
+	{
+		Spawn:
+			ZOOP D 0
+			ZOOP D 0 A_Explode((2),64,0,0,32)
+		stop
+	}
+}
+
+actor LightningFireballTrail
+{
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	alpha 0.85
+	renderstyle add
+	scale 1.0
+	States
+	{
+		Spawn:
+			DMFX D 0
+			DMFX ABCABC 2 bright A_FadeOut(0.1)
+			stop			
+	}
+}
+actor LightningFireballTrail2
+{
+	+NOBLOCKMAP
+	+NOCLIP
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	//alpha 0.85
+	renderstyle add
+	scale 0.50
+	States
+	{
+		Spawn:
+			DMFX D 0
+			DMFX D 0 A_SpawnItemEx("LittleFireballTrail",random(-3,3),random(-3,3),random(-3,3),random(-1,1),random(-1,1),random(-1,1))
+
+			//DMFX D 0 A_SetScale(frandom(0.4,0.6))
+			
+			
+			DMFX D 3 bright A_SetScale(0.7)
+			DMFX E 3 bright A_SetScale(0.6)
+			DMFX F 3 bright A_SetScale(0.5)
+			DMFX G 3 bright A_SetScale(0.4)
+			DMFX H 3 bright A_SetScale(0.4)
+			
+			//DMFX DEFGH 3 bright A_FadeOut(0.1)
+			stop			
+	}
+}
+
+actor LittleFireballTrail
+{
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	renderstyle translucent
+	height 1
+	radius 1
+	alpha 0.3
+	Translation "96:103=108:111"
+	States
+	{
+		Spawn:
+			SMOK ABCDEFGH 4 bright
+			stop
+	}
+}
+
+//not used to my knowledge
+actor LightningShotFollower : LightningShot
+{
+	States
+	{
+		Spawn:
+			ZOOP G 0
+			TNT1 A 0 bright A_SeekerMissile(20,45,SMF_LOOK|SMF_PRECISE,255)
+			ZOOP GGG 1 bright Light("SmallShotGlowBlue")
+			TNT1 A 0 bright A_SpawnItemEx("BluepoofLograv", random(-4,4), random(-4,4), random(-4,4))
+			loop
+		
+		XDeath:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",1)
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+			goto Death
+		Death:
+			PULB A 0 A_SetScale(0.6)
+			PULB A 0 A_SpawnItemEx("BluepoofBurst")				
+			PULB A 0 A_Jump(128,"Death2")			
+			PULB ABCD 2 bright A_FadeOut(0.1)
+			stop
+		Death2:
+			PULB EFGH 2 bright A_FadeOut(0.1)
+			stop
+	}
+}
+
+
+
+actor LaserShot : FastProjectile
+{
+	DamageType "PlayerFire"
+	PROJECTILE
+	speed 300
+	scale 2.0
+	damage (1)
+	alpha 0.95
+	renderstyle add
+	radius 12
+	height 12
+	//+SEEKERMISSILE
+	+RIPPER
+	//+FORCEPAIN //testing?
+	DeathSound "weapons/lightningspell/hit"
+	MissileType "LaserShotShow"
+	Missileheight 8
+	//+THRUGHOST
+	+THRUACTORS
+	+GETOWNER
+	+EXTREMEDEATH
+	+NODAMAGETHRUST
+	States
+	{
+		Spawn:
+			ZOOP E 0
+			//ZOOP E 0 A_Explode((2),128,0)
+			//ZOOP E 0 A_SpawnItemEx("LaserShotShow",0,0,0)
+			//ZOOP E 0 A_SpawnItemEx("BlockFucker2",64,0,0)
+			ZOOP E 1 bright Light("SmallShotGlow") //A_SpawnItemEx("LaserShotRing")
+			loop
+			
+		XDeath: //doesn't give because its a ripper. Whoops?
+			TNT1 A 0 A_GiveToTarget("LightningAmmo",1)
+			goto Death
+		Death:
+			TNT1 A 0 A_GiveToTarget("PowerAmmo",1)
+			PULS A 0 A_SetScale(1.6)
+			PULS A 0 A_ChangeFlag(FORCEXYBILLBOARD,1)
+			PULS A 0 A_SpawnItemEx("YellowpoofBurst")				
+			PULS A 0 A_ChangeFlag("ROLLSPRITE",1)
+			PULS ABCD 2 bright A_SetRoll(roll+22,SPF_INTERPOLATE)
+			stop
+	}
+}
+
+
+
+actor LaserShotShow
+{
+	+NOGRAVITY
+	height 7
+	radius 7
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+EXTREMEDEATH
+	renderstyle add
+	DamageType "PlayerFire"
+	scale 2.0
+	States
+	{
+		Spawn:
+			ZOOP E 0
+			ZOOP E 0 A_Explode((3),64,0)
+			ZOOP E 0 A_SpawnItemEx("BlockFucker2",32,0,0)
+			ZOOP E 0 A_JumpIf(CallACS("Laser_Counter",0,0,0,0)==1,"Flare")
+		Regular:
+			//ZOOP E 0 A_SpawnItemEx("BlockFucker2",64,0,0)
+			ZOOP E 2 bright A_FadeOut(0.1)
+			loop
+		Flare:
+			TRNG D 0 bright A_SpawnItemEx("LaserShotRing")
+			goto Regular
+	}
+}
+
+actor LaserShotRing
+{
+	+NOGRAVITY
+	height 7
+	radius 7
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	+EXTREMEDEATH
+	scale 0.5
+	alpha 1.1
+	renderstyle add
+	States
+	{
+		Spawn:
+			TRNG D 0 bright A_SetScale(0.5)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(0.6)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(0.7)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(0.8)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(0.9)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(1.0)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(1.1)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(1.2)
+			TRNG D 1 bright A_FadeOut(0.1)
+			TRNG D 0 bright A_SetScale(1.3)
+			TRNG D 1 bright A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+
+
+
+actor HocusBomb 
+{	
+	//$Category Useful_Stuff
+	//$Color 1
+	//$NotAngled
+	
+	DamageType "HocusBombX"
+	//DamageFactor "HocusBomb", 0
+	DamageFactor "IHateBlocks", 0
+	DamageFactor "Trap", 0
+	PainChance "Trap", 0
+	scale 2.0
+	Radius 16
+	Height 56
+	PainChance 255
+	Monster
+	+NOBLOOD
+	+THRUSPECIES
+	+MTHRUSPECIES
+	+GHOST
+	+FULLVOLACTIVE
+	+FULLVOLDEATH
+	+EXTREMEDEATH
+	Species "Living"
+	maxtargetrange 512
+	SeeSound "monster/spawn"
+	PainSound ""
+	ActiveSound ""
+	-SOLID
+	-SHOOTABLE
+	+NOPAIN
+	+INVISIBLE
+	var int user_setactive;
+	var int user_basehealth;
+	var int user_doonce;
+	var int user_resetcounter;
+	var int user_startx;
+	var int user_starty;
+	var int user_startz;
+	Tag "Smart Bomb"
+	Health 1
+	Mass 300
+	Speed 12
+	Obituary "%o got hit by a Smart Bomb"
+	HitObituary "%o got hit by a Smart Bomb"
+	accuracy 1000
+	
+	+NOGRAVITY
+	//+SPAWNFLOAT
+	+AVOIDMELEE	
+	+FLOAT
+	-COUNTKILL
+	//+FRIENDLY
+	
+	States
+	{
+		Spawn:
+			BOMF A 1
+		Spawn2:
+			"####" A 0 A_JumpIf(user_doonce==1,"Spawn3")
+			"####" A 0 A_SetUserVar(user_doonce,1)
+			"####" A 0 A_SetUserVar(user_startx,x)
+			"####" A 0 A_SetUserVar(user_starty,y)
+			"####" A 0 A_SetUserVar(user_startz,z)
+			"####" A 0 ACS_NamedExecuteWithResult("MonsterSetup",0,0,0)
+		Spawn3:
+			"####" A 0 A_ChangeFlag("INVISIBLE",0)
+			"####" A 0 A_HideThing
+			"####" A 10 A_Look
+			goto Spawn3
+		Idle:
+			"####" A 3 A_Chase
+			Loop
+		Restart:	
+			"####" A 0 A_ClearTarget
+			"####" A 0 ACS_NamedExecuteAlways("ResetMonsterhealth",0,0,0)//ACS_ExecuteAlways(603,0,1,0,0)
+			"####" A 0 A_SetUserVar(user_setactive,0)
+			"####" A 10 bright A_SpawnItemEx("SpawnPoof")	
+			goto Spawn3
+		See:
+			"####" A 0 A_JumpIf(user_setactive==1,"NormalSee")
+			"####" A 16 bright A_SpawnItemEx("SpawnPoof")
+			"####" A 0 A_SetShootable
+			"####" A 0 A_SetSolid	
+			"####" A 0 A_UnHideThing	
+			"####" A 0 A_SetUserVar(user_setactive,1)
+			"####" A 10 
+			"####" A 0 A_ChangeFlag("NOPAIN",0)
+			goto NormalSee
+		NormalSee:
+			"####" A 0 A_UnHideThing	
+			"####" A 0 A_SentinelBob
+			"####" ABC 3 A_Chase(0,0)
+			"####" A 0 A_SentinelBob
+			"####" DCB 3 A_Chase(0,0)
+			"####" A 0 A_JumpIfCloser(1024,"NormalSee") //loop as long as you're close	
+			"####" A 0 A_JumpIf(user_resetcounter>=20,"CheckReset")
+			"####" A 0 A_SetUserVar(user_resetcounter,user_resetcounter+1)
+			"####" A 0 A_Jump(256, "NormalSee") 
+			goto NormalSee
+		CheckReset:
+			"####" A 0 A_CheckSight("Restart") //if you're far away AND out of sight
+			"####" A 0 A_SetUserVar(user_resetcounter,0)
+			goto NormalSee
+		Pain:
+			"####" A 0 bright ACS_NamedExecuteAlways("MonsterPain",0,0,0)//ACS_ExecuteAlways(996,0,0,0,0)
+			Goto NormalSee
+		Death:
+			"####" A 0 Acs_NamedExecuteAlways("AddToScore",0,accuracy)
+		NoScoreDeath:
+			"####" A 0 A_Explode(10,512,0,0,512)
+			"####" A 0 A_PlaySound("monster/death",CHAN_AUTO,1.0,0,ATTN_NONE)
+			"####" A 2 bright ACS_NamedExecuteAlways("MonsterPain",0,0,0)//ACS_ExecuteAlways(996,0,0,0,0)
+			"####" A 0 bright A_SpawnItemEx("MagicPoof")
+			"####" A 0 bright A_Scream
+			Stop
+	}
+}
+
+
+
+
+actor RicochetShot : LightningShot
+{
+	speed 40
+	damage (1)
+	+SEEKERMISSILE
+	BounceSound "monster/shot"
+	+USEBOUNCESTATE
+	Bouncetype "Hexen"
+	Bouncecount 2
+	Bouncefactor 2.0
+	+CANBOUNCEWATER
+	//+BOUNCEONACTORS
+	States
+	{	
+		Spawn:
+			ZOOP E 0
+			ZOOP E 0 bright A_SeekerMissile(0,2)
+			ZOOP EEE 1 bright Light("SmallShotGlow") A_Weave(3, 0, 1.0, 0.0)
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			goto spawn
+
+
+		Bounce:
+			ZOOP E 0 bright A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			ZOOP EEE 1 bright A_SeekerMissile(90,90,SMF_LOOK|SMF_PRECISE,256,128)
+			goto Spawn
+
+	}
+}
+actor RicochetShotB : RicochetShot
+{
+	WeaveIndexXY 32
+}
+
+//not used
+actor PowerBombTrail
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	scale 1.5
+	+ROLLSPRITE
+	
+	States
+	{
+		Spawn:
+			BOOM A 0 A_SetRoll(roll+5)
+			BOOM A 1 bright A_FadeOut(0.1)
+			loop
+	}
+}
+
+
+actor PowerBomb
+{
+	DamageType "PlayerBomb"
+	PROJECTILE
+	speed 40
+	scale 1.5
+	damage (10)
+	radius 17
+	height 17
+	+NODAMAGETHRUST
+	DeathSound "weapons/bombbounce"
+	-NOGRAVITY
+	gravity 0.95
+	+ROLLSPRITE
+	+FOILINVUL
+	+FORCERADIUSDMG
+	+OLDRADIUSDMG
+	+SKYEXPLODE
+	+EXTREMEDEATH
+	//+FULLVOLDEATH
+	+CAUSEPAIN
+	var int user_height;
+	States
+	{	
+		Spawn:
+			BOOM A 0
+			BOOM A 0 bright A_SetRoll(roll+8)//,SPF_INTERPOLATE)
+			BOOM A 1 bright Light("SmallShotGlow") A_SpawnItemEx("YellowpoofLograv", random(-4,4), random(-4,4), random(-4,4),0,0,0,0,0,CallACS("CheckPLvl"))
+			loop
+		Death:
+			TNT1 A 0 A_ChangeFlag(FORCEXYBILLBOARD,1)
+			TNT1 A 0 A_NoGravity
+			TNT1 A 0 A_SpawnItemEx("BlockFucker",16)	
+			TNT1 A 0 bright A_SetRoll(0)
+			//TNT1 A 0 A_Jump(256,"Banger","Banger2")
+			
+		//Banger:
+			TNT1 A 0 A_SetScale(3.5)
+			TNT1 AAAAAAAAAA 0 A_SpawnitemEx("MixedMagicGrav",0,0,8,frandom(-4,4),frandom(-4,4),frandom(8,20),0,0,CallACS("CheckPLvl"))
+			TNT1 A 0 A_SpawnItemEx("MagicPoof")
+			TNT1 A 0 A_SpawnItemEx("PowerBombBoom",0,0,24,0,0,0,0,SXF_TRANSFERPOINTERS)
+			
+			TNT1 A 0 A_PlaySound("weapons/bombboom",1,255)
+			TNT1 AAA 0 A_SpawnItemEx("PowerBombSparkle",frandom(-32,32),frandom(-32,32),frandom(-32,32)+32,0,0,0,0,SXF_TRANSFERPOINTERS)
+			TNT1 A 6 Light("SmallShotGlow") A_Explode((6),384,0,1,384)
+			
+			TNT1 A 0 A_PlaySound("weapons/bombboom",1,255)
+			TNT1 AAA 0 A_SpawnItemEx("PowerBombSparkle",frandom(-32,32),frandom(-32,32),frandom(-32,32)+32,0,0,0,0,SXF_TRANSFERPOINTERS)
+			TNT1 A 6 Light("SmallShotGlow") A_Explode((6),384,0,1,384)
+			
+			TNT1 A 0 A_PlaySound("weapons/bombboom",1,255)
+			TNT1 AAA 0 A_SpawnItemEx("PowerBombSparkle",frandom(-32,32),frandom(-32,32),frandom(-32,32)+32,0,0,0,0,SXF_TRANSFERPOINTERS)
+			TNT1 A 1 Light("SmallShotGlow") A_Explode((8),256,0,1,256)
+
+			
+			stop
+			//A_RadiusThrust(-5000, 1024,RTF_NOIMPACTDAMAGE,1024)
+			//lots of fun, goofy as shit, not useful and causes some... 'side effects'
+		/*
+		Banger2:
+			TNT1 A 0 A_SetScale(5.0)			
+		Deathblossom:
+			TNT1 A 0 A_JumpIf(user_height>120,"End")
+			TNT1 A 0 A_SpawnItemEx("PowerBombBoomB",frandom(-16,16),frandom(-16,16),frandom(16,48)+user_height,0,0,2,0,SXF_TRANSFERSCALE)
+			TNT1 A 0 A_SetScale((scalex-0.35))
+			TNT1 AAA 2 A_Explode((1),512,0,1,512)
+			TNT1 A 0 A_SetUserVar(user_height,user_height+60)
+			TNT1 A 0 bright Light("SmallShotGlow") A_PlaySound("weapons/bombboom",1,127)
+			Loop
+		End:
+			TNT1 A 0
+			stop
+		*/
+	}
+}
+	
+actor PowerBombBoom
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+BRIGHT
+	renderstyle add
+	scale 3.5
+	
+	States
+	{
+		Spawn:
+			BLST A 0
+			BLST A 0 A_Jump(128,2)
+			BLST A 0 A_SetScale(-3.5,3.5)
+			BLST ABCDEFGH 3 bright
+			stop
+	}
+}
+		
+actor PowerBombSparkle
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	+BRIGHT
+	renderstyle add
+	scale 2.5
+	+ROLLSPRITE
+	
+	States
+	{
+		Spawn:
+			PULS D 2 bright
+			PULS ABCD 2 bright A_SetRoll(roll+22,SPF_INTERPOLATE)
+			stop
+	}
+}
+	
+actor PowerBombBoomB
+{
+	+NOINTERACTION
+	+NOGRAVITY
+	scale 8.0
+	
+	States
+	{
+		Spawn:
+			BLST A 0
+ 			BLST AAAAA 0 A_SpawnitemEx("MixedMagicGrav",0,0,8,frandom(-4,4),frandom(-4,4),frandom(8,20),0,0,CallACS("CheckPLvl"))
+			BLST A 0 bright A_SpawnItemEx("MagicPoof")
+			BLST ABCDEFGH 3 bright 	
+			stop
+	}
+}
+
+

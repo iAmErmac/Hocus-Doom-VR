@@ -6,6 +6,8 @@ This mod replaces all weapons and hand sprites for Hocus Pocus Doom mod (https:/
 
 [![Download Now](https://raster.shields.io/github/downloads/iAmErmac/Hocus-Doom-VR/total)](https://github.com/iAmErmac/Hocus-Doom-VR/releases/latest)
 
+[<img src="https://cdn.ko-fi.com/cdn/kofi2.png?v=2" height="36" alt="Buy me a Cofee!">](https://ko-fi.com/ermac)
+
 ## Features
 * 3D hand and weapon models
 * Option for hiding the left hand model (Use right hand only)
